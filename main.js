@@ -2,8 +2,6 @@ const root = document.documentElement;
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = themeToggle.querySelector('.theme-icon');
 const themeLabel = themeToggle.querySelector('.theme-label');
-const button = document.getElementById('clickBtn');
-const message = document.getElementById('message');
 
 const savedTheme = localStorage.getItem('theme');
 const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -24,8 +22,4 @@ themeToggle.addEventListener('click', () => {
   currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', currentTheme);
   applyTheme(currentTheme);
-});
-
-button.addEventListener('click', () => {
-  message.textContent = '좋아요! 버튼을 클릭했습니다.';
 });

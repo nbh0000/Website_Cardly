@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <title>AI Project</title>
+    <meta name="description" content="AI Project 제휴 문의 페이지" />
+    <title>제휴 문의 | AI Project</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -20,10 +21,72 @@
     </button>
 
     <main class="container">
-      <h1>환영합니다</h1>
-      <p>이 페이지는 HTML, CSS, JavaScript로 구성한 간단한 예시입니다.</p>
-      <button class="primary-button" id="clickBtn" type="button">클릭해보세요</button>
-      <p id="message" aria-live="polite">버튼을 눌러 메시지를 바꿔보세요.</p>
+      <header class="intro">
+        <span class="eyebrow">PARTNERSHIP</span>
+        <h1>함께 만들 새로운 기회를<br />기다리고 있습니다.</h1>
+        <p>제휴 아이디어와 프로젝트 내용을 남겨주시면 확인 후 연락드리겠습니다.</p>
+      </header>
+
+      <form class="contact-form" action="https://formspree.io/f/xkodzkvo" method="POST">
+        <input type="hidden" name="_subject" value="AI Project 새 제휴 문의" />
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">이름 <span aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="company">회사명</label>
+            <input id="company" name="company" type="text" autocomplete="organization" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">이메일 <span aria-hidden="true">*</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required />
+        </div>
+
+        <div class="field">
+          <label for="inquiryType">문의 유형 <span aria-hidden="true">*</span></label>
+          <select id="inquiryType" name="inquiry_type" required>
+            <option value="" selected disabled>문의 유형을 선택해 주세요</option>
+            <option value="business-partnership">사업 제휴</option>
+            <option value="content-partnership">콘텐츠 제휴</option>
+            <option value="technology-partnership">기술 제휴</option>
+            <option value="marketing">마케팅·광고</option>
+            <option value="other">기타</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">문의 내용 <span aria-hidden="true">*</span></label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            minlength="10"
+            placeholder="제휴 목적과 기대하는 협업 방식을 간단히 알려주세요."
+            required
+          ></textarea>
+        </div>
+
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">웹사이트</label>
+          <input id="website" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <label class="consent">
+          <input name="privacy_consent" type="checkbox" value="agreed" required />
+          <span>문의 처리에 필요한 이름과 이메일을 Formspree로 전송하는 데 동의합니다.</span>
+        </label>
+
+        <button class="submit-button" type="submit">
+          제휴 문의 보내기
+          <span aria-hidden="true">→</span>
+        </button>
+        <p class="form-note">입력하신 정보는 문의 확인과 답변 목적으로만 사용됩니다.</p>
+      </form>
     </main>
 
     <script src="main.js"></script>
