@@ -3,15 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <title>AI Project</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      type="button"
+      aria-label="다크 모드로 전환"
+      aria-pressed="false"
+    >
+      <span class="theme-icon" aria-hidden="true">☾</span>
+      <span class="theme-label">다크 모드</span>
+    </button>
+
     <main class="container">
       <h1>환영합니다</h1>
-      <p>이 페이지는 HTML, CSS, JavaScript로 구성된 간단한 예시입니다.</p>
-      <button id="clickBtn">클릭해보세요</button>
-      <p id="message">버튼을 눌러 메시지를 바꿔보세요.</p>
+      <p>이 페이지는 HTML, CSS, JavaScript로 구성한 간단한 예시입니다.</p>
+      <button class="primary-button" id="clickBtn" type="button">클릭해보세요</button>
+      <p id="message" aria-live="polite">버튼을 눌러 메시지를 바꿔보세요.</p>
     </main>
 
     <script src="main.js"></script>
