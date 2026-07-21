@@ -59,6 +59,36 @@ body {
   backdrop-filter: blur(14px);
 }
 
+.page-nav {
+  display: flex;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-bottom: 2.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--input) 72%, transparent);
+}
+
+.page-nav a {
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.page-nav a[aria-current="page"] {
+  color: var(--button-text);
+  background: var(--primary);
+}
+
+.page-nav a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
 .intro {
   margin-bottom: 2.25rem;
 }
@@ -188,6 +218,35 @@ button {
   color: var(--muted);
   font-size: 0.78rem;
   text-align: center;
+}
+
+.comments-panel {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.comments-panel h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.service-note {
+  margin: 0.65rem 0 1.75rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+#disqus_thread {
+  min-height: 220px;
+}
+
+noscript {
+  display: block;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
 }
 
 .theme-toggle {
