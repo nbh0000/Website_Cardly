@@ -23,7 +23,7 @@ themeToggle?.addEventListener('click', () => {
 
 const cardForm = document.getElementById('cardForm');
 if (cardForm) {
-  const families = [['minimal','미니멀'],['bold','볼드'],['classic','클래식'],['swiss','스위스'],['bauhaus','바우하우스'],['luxury','럭셔리'],['gradient','그라디언트'],['mono','모노'],['pastel','파스텔'],['corporate','비즈니스']];
+  const families = [['minimal','브랜드 미니멀'],['bold','크리에이티브 볼드'],['classic','클래식 에디토리얼'],['swiss','스위스 그리드'],['bauhaus','아트 스튜디오'],['luxury','프리미엄 골드'],['gradient','테크 그라디언트'],['mono','모노 타이포'],['pastel','뷰티 & 라이프'],['corporate','프로페셔널']];
   const densities = [['airy','여유'],['balanced','균형'],['compact','밀집'],['edge','엣지'],['inset','인셋']];
   const alignments = [['left','좌측'],['center','중앙'],['split','분할'],['bottom','하단'],['vertical','세로']];
   const decorations = [['clean','클린'],['shape','도형']];
@@ -119,9 +119,12 @@ if (cardForm) {
     if (layout === 'gradient') { const g=ctx.createLinearGradient(0,0,1800,1000); g.addColorStop(0,accent); g.addColorStop(1,'#d946ef'); ctx.fillStyle=g; ctx.fillRect(0,0,1800,1000); }
     if (layout === 'pastel') { const g=ctx.createLinearGradient(0,0,1800,1000); g.addColorStop(0,'#ffe5e9'); g.addColorStop(1,'#dff7f1'); ctx.fillStyle=g; ctx.fillRect(0,0,1800,1000); }
     if (layout === 'mono') { ctx.fillStyle='#111'; ctx.fillRect(1320,0,480,1000); }
+    if (layout === 'corporate') { ctx.fillStyle='#112a46'; ctx.fillRect(1350,0,450,1000); ctx.strokeStyle=accent; ctx.lineWidth=4; ctx.strokeRect(1615,130,80,740); }
     if (layout === 'minimal' || layout === 'swiss') { ctx.fillStyle=accent; ctx.fillRect(0,0,layout === 'swiss' ? 180 : 30,1000); }
-    if (layout === 'bold') { ctx.fillStyle=accent; ctx.fillRect(0,962,1800,38); }
-    if (layout === 'classic') { ctx.strokeStyle=accent; ctx.lineWidth=10; ctx.strokeRect(5,5,1790,990); }
+    if (layout === 'bold') { ctx.fillStyle=accent; ctx.beginPath(); ctx.moveTo(1280,0); ctx.lineTo(1800,0); ctx.lineTo(1800,1000); ctx.lineTo(1500,1000); ctx.closePath(); ctx.fill(); }
+    if (layout === 'classic') { ctx.fillStyle='#f7f2e8'; ctx.fillRect(0,0,1800,1000); ctx.strokeStyle=accent; ctx.lineWidth=7; ctx.strokeRect(16,16,1768,968); ctx.globalAlpha=.35; ctx.strokeRect(38,38,1724,924); ctx.globalAlpha=1; }
+    if (layout === 'bauhaus') { ctx.fillStyle='#f2b705'; ctx.beginPath(); ctx.arc(1510,80,180,0,Math.PI*2); ctx.strokeStyle='#f2b705'; ctx.lineWidth=46; ctx.stroke(); ctx.fillStyle='#e44932'; ctx.fillRect(1515,115,135,135); }
+    if (layout === 'luxury') { ctx.strokeStyle='#d3b66d'; ctx.lineWidth=3; ctx.globalAlpha=.42; ctx.strokeRect(34,34,1732,932); ctx.globalAlpha=1; }
     if (decoration === 'shape') { ctx.globalAlpha=.14; ctx.fillStyle=accent; ctx.beginPath(); ctx.arc(1580,160,260,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; }
 
     const brandX = centered ? 900 : padding;
