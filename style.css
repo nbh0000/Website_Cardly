@@ -921,6 +921,33 @@ a {
   mix-blend-mode: soft-light;
   opacity: 0.72;
 }
+.canvas-text-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: min(100%, 260px);
+  flex: 1 1 260px;
+}
+.canvas-text-editor span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.canvas-text-editor input {
+  width: 100%;
+  min-width: 120px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 8px 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+.canvas-text-editor input:focus {
+  border-color: var(--purple);
+  outline: 3px solid rgba(99, 91, 255, 0.13);
+}
 .business-card[data-material="wood"]:after {
   background:
     repeating-radial-gradient(ellipse at -10% 50%, transparent 0 18px, rgba(93,54,28,.22) 20px 22px, transparent 24px 35px),

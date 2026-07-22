@@ -727,6 +727,7 @@ function Maker() {
             <EditorToolbar
               selected={items.find((x) => x.id === selected)}
               onSize={(size) => patchItem(selected, { size })}
+              onText={(text) => patchItem(selected, { text })}
               onAdd={add}
               onDuplicate={duplicateSelected}
               onCenter={centerSelected}
@@ -889,6 +890,7 @@ function DataProtection({ items, setItems, autoSave, setAutoSave }) {
 function EditorToolbar({
   selected,
   onSize,
+  onText,
   onAdd,
   onDelete,
   onDuplicate,
@@ -901,6 +903,17 @@ function EditorToolbar({
   const [type, setType] = useState("text");
   return (
     <div className="canvas-toolbar">
+      {selected && !["divider", "circle", "square", "image"].includes(selected.type) && (
+        <label className="canvas-text-editor">
+          <span>텍스트</span>
+          <input
+            value={selected.text || ""}
+            onFocus={(event) => event.currentTarget.select()}
+            onChange={(event) => onText(event.target.value)}
+            aria-label="선택한 명함 텍스트 편집"
+          />
+        </label>
+      )}
       <select value={type} onChange={(e) => setType(e.target.value)}>
         {["text", "email", "phone", "logo", "divider", "circle", "square"].map(
           (x) => (
