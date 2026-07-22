@@ -13,7 +13,7 @@ const families = [
   "mono",
   "pastel",
   "corporate",
-].map((item) => ({ ...item, side: "front" }));
+];
 const initialBackItems = [
   {
     id: "back-company",
@@ -34,7 +34,6 @@ const initialBackItems = [
     side: "back",
   },
 ];
-const initialCardItems = [...initialItems, ...initialBackItems];
 const familyNames = [
   "브랜드 미니멀",
   "크리에이티브 볼드",
@@ -54,7 +53,7 @@ const finishes = [
   ["metal", "메탈"],
   ["hologram", "스페셜"],
 ];
-const templates = families.flatMap((family, i) =>
+const legacyTemplates = families.flatMap((family, i) =>
   finishes.map(([material, finish], j) => ({
     id: i * 5 + j + 1,
     family,
@@ -63,6 +62,91 @@ const templates = families.flatMap((family, i) =>
     corners: j === 4 ? "round" : j % 2 ? "square" : "soft",
   })),
 );
+const designFamilies = [
+  "브랜드 미니멀",
+  "크리에이티브 볼드",
+  "클래식 에디션",
+  "스위스 그리드",
+  "바우하우스 스튜디오",
+  "프리미엄 골드",
+  "테크 그래디언트",
+  "모노 타이포",
+  "파스텔 라이프",
+  "프로페셔널",
+];
+const designVariants = [
+  { name: "클린", material: "smooth", corners: "soft", density: "balanced", align: "left", decoration: "none" },
+  { name: "프레임", material: "cotton", corners: "square", density: "inset", align: "left", decoration: "frame" },
+  { name: "사이드라인", material: "smooth", corners: "soft", density: "edge", align: "split", decoration: "rail" },
+  { name: "스포트라이트", material: "softtouch", corners: "round", density: "airy", align: "center", decoration: "spot" },
+  { name: "다이애그널", material: "metal", corners: "square", density: "compact", align: "bottom", decoration: "diagonal" },
+  { name: "그리드", material: "linen", corners: "soft", density: "balanced", align: "left", decoration: "grid" },
+  { name: "아치", material: "cotton", corners: "round", density: "airy", align: "center", decoration: "arch" },
+  { name: "블록", material: "kraft", corners: "square", density: "compact", align: "split", decoration: "block" },
+  { name: "오로라", material: "hologram", corners: "round", density: "inset", align: "bottom", decoration: "aurora" },
+  { name: "에디토리얼", material: "smooth", corners: "soft", density: "edge", align: "vertical", decoration: "editorial" },
+];
+const legacyDesignTemplates = families.flatMap((family, familyIndex) =>
+  designVariants.map((variant, variantIndex) => ({
+    id: familyIndex * 10 + variantIndex + 1,
+    family,
+    name: `${designFamilies[familyIndex]} · ${variant.name}`,
+    variant: variantIndex,
+    ...variant,
+  })),
+);
+const layoutArchetypes = [
+  { company: [7, 10, 90], name: [7, 43, 145], role: [7, 61, 92], contact: [[7, 82], [39, 82], [71, 82]], align: "left", motif: 0 },
+  { company: [62, 11, 82], name: [8, 34, 155], role: [9, 55, 90], contact: [[9, 76], [9, 84], [63, 84]], align: "left", motif: 1 },
+  { company: [8, 12, 88], name: [50, 38, 145], role: [50, 57, 88], contact: [[8, 80], [40, 80], [70, 80]], align: "center", motif: 2 },
+  { company: [72, 12, 84], name: [8, 66, 150], role: [8, 83, 86], contact: [[58, 65], [58, 75], [58, 85]], align: "left", motif: 3 },
+  { company: [8, 45, 86], name: [37, 24, 150], role: [38, 43, 90], contact: [[38, 67], [38, 77], [68, 77]], align: "left", motif: 4 },
+  { company: [42, 10, 90], name: [42, 39, 148], role: [42, 57, 88], contact: [[42, 76], [42, 84], [70, 84]], align: "left", motif: 5 },
+  { company: [8, 12, 90], name: [8, 30, 168], role: [9, 52, 92], contact: [[9, 74], [9, 83], [62, 83]], align: "left", motif: 6 },
+  { company: [50, 13, 92], name: [50, 42, 150], role: [50, 60, 88], contact: [[18, 82], [50, 82], [76, 82]], align: "center", motif: 7 },
+  { company: [73, 75, 84], name: [8, 18, 150], role: [8, 37, 90], contact: [[8, 66], [8, 76], [8, 86]], align: "left", motif: 8 },
+  { company: [8, 10, 86], name: [8, 70, 145], role: [8, 86, 84], contact: [[58, 17], [58, 27], [58, 37]], align: "left", motif: 9 },
+  { company: [46, 14, 88], name: [46, 45, 158], role: [46, 64, 88], contact: [[8, 79], [38, 79], [69, 79]], align: "left", motif: 0 },
+  { company: [8, 82, 86], name: [8, 20, 160], role: [8, 41, 90], contact: [[55, 60], [55, 71], [55, 82]], align: "left", motif: 1 },
+  { company: [68, 12, 82], name: [50, 40, 152], role: [50, 58, 88], contact: [[14, 80], [46, 80], [74, 80]], align: "center", motif: 2 },
+  { company: [10, 16, 88], name: [10, 40, 142], role: [10, 58, 86], contact: [[61, 39], [61, 51], [61, 63]], align: "left", motif: 3 },
+  { company: [44, 84, 84], name: [8, 18, 162], role: [8, 39, 90], contact: [[8, 70], [39, 70], [69, 70]], align: "left", motif: 4 },
+  { company: [8, 11, 86], name: [33, 37, 150], role: [33, 56, 88], contact: [[33, 76], [58, 76], [58, 85]], align: "left", motif: 5 },
+  { company: [50, 12, 90], name: [50, 35, 160], role: [50, 55, 90], contact: [[50, 72], [50, 80], [50, 88]], align: "center", motif: 6 },
+  { company: [75, 12, 82], name: [8, 47, 154], role: [8, 66, 88], contact: [[8, 83], [39, 83], [69, 83]], align: "left", motif: 7 },
+  { company: [8, 13, 88], name: [57, 26, 148], role: [57, 45, 86], contact: [[57, 65], [57, 75], [57, 85]], align: "left", motif: 8 },
+  { company: [8, 78, 84], name: [8, 25, 148], role: [8, 44, 88], contact: [[50, 25], [50, 36], [50, 47]], align: "left", motif: 9 },
+];
+const templates = Array.from({ length: 200 }, (_, index) => {
+  const base = layoutArchetypes[index % layoutArchetypes.length];
+  const edition = Math.floor(index / layoutArchetypes.length);
+  const offsetX = (edition % 5) - 2;
+  const offsetY = Math.floor(edition / 5) * 2;
+  const adjust = ([x, y, size]) => [
+    Math.max(3, Math.min(88, x + offsetX)),
+    Math.max(5, Math.min(90, y + offsetY)),
+    size + ((edition * 7 + index) % 5) * 3,
+  ];
+  return {
+    id: index + 1,
+    name: `디자인 ${String(index + 1).padStart(3, "0")}`,
+    motif: (base.motif + edition) % 10,
+    angle: (index * 17) % 180,
+    motifX: 10 + ((index * 29) % 78),
+    motifY: 8 + ((index * 37) % 78),
+    motifSize: 18 + ((index * 11) % 34),
+    layout: {
+      company: adjust(base.company),
+      name: adjust(base.name),
+      role: adjust(base.role),
+      contacts: base.contact.map(([x, y], contactIndex) => [
+        Math.max(3, Math.min(88, x + offsetX + (edition % 2 ? contactIndex : 0))),
+        Math.max(5, Math.min(90, y + offsetY)),
+      ]),
+      align: base.align,
+    },
+  };
+});
 const defaults = {
   minimal: ["#fff", "#171724", "#635bff"],
   bold: ["#141419", "#fff", "#ff5c35"],
@@ -110,7 +194,8 @@ const initialItems = [
     y: 84,
     size: 100,
   },
-];
+].map((item) => ({ ...item, side: "front" }));
+const initialCardItems = [...initialItems, ...initialBackItems];
 const resumeCategories = [
   "신입",
   "경력직",
@@ -263,13 +348,21 @@ function Home() {
 
 function Maker() {
   const cardRef = useRef();
+  const historyRef = useRef([]);
+  const futureRef = useRef([]);
+  const [, setHistoryVersion] = useState(0);
   const [template, setTemplate] = useState(templates[0]);
   const [items, setItems] = useState(() => {
     try {
-      return (
-        JSON.parse(localStorage.getItem("cardly-project"))?.items ||
-        initialCardItems
-      );
+      const savedItems = JSON.parse(
+        localStorage.getItem("cardly-project"),
+      )?.items;
+      if (!Array.isArray(savedItems) || savedItems.length === 0)
+        return initialCardItems;
+      return savedItems.map((item) => ({
+        ...item,
+        side: item.side || "front",
+      }));
     } catch {
       return initialCardItems;
     }
@@ -287,12 +380,54 @@ function Maker() {
   const [material, setMaterial] = useState("smooth");
   const [corners, setCorners] = useState("soft");
   const [font, setFont] = useState('"Noto Sans KR",sans-serif');
+  const remember = () => {
+    historyRef.current = [
+      ...historyRef.current.slice(-29),
+      items.map((item) => ({ ...item })),
+    ];
+    futureRef.current = [];
+    setHistoryVersion((value) => value + 1);
+  };
+  const undo = () => {
+    const previous = historyRef.current.pop();
+    if (!previous) return;
+    futureRef.current.push(items.map((item) => ({ ...item })));
+    setItems(previous);
+    setSelected(null);
+    setHistoryVersion((value) => value + 1);
+  };
+  const redo = () => {
+    const next = futureRef.current.pop();
+    if (!next) return;
+    historyRef.current.push(items.map((item) => ({ ...item })));
+    setItems(next);
+    setSelected(null);
+    setHistoryVersion((value) => value + 1);
+  };
   const choose = (t) => {
+    remember();
     setTemplate(t);
-    const [bg, text, accent] = defaults[t.family];
-    setColors({ bg, text, accent });
-    setMaterial(t.material);
-    setCorners(t.corners);
+    const positions = {
+      company: t.layout.company,
+      name: t.layout.name,
+      role: t.layout.role,
+      email: [...t.layout.contacts[0], 100],
+      phone: [...t.layout.contacts[1], 100],
+      website: [...t.layout.contacts[2], 100],
+    };
+    setItems((list) =>
+      list.map((item) => {
+        const position = item.side === "front" ? positions[item.id] : null;
+        if (!position) return item;
+        return {
+          ...item,
+          x: position[0],
+          y: position[1],
+          size: position[2],
+          align: t.layout.align,
+        };
+      }),
+    );
   };
   const patchItem = (id, patch) =>
     setItems((list) =>
@@ -301,14 +436,30 @@ function Maker() {
   const dragStart = (e, item) => {
     if (e.detail > 1) return;
     e.preventDefault();
+    remember();
     setSelected(item.id);
     const rect = cardRef.current.getBoundingClientRect(),
       startX = e.clientX,
       startY = e.clientY,
       originX = item.x,
       originY = item.y;
-    e.currentTarget.setPointerCapture(e.pointerId);
-    const move = (ev) =>
+    const target = e.currentTarget;
+    const pointerId = e.pointerId;
+    target.setPointerCapture(pointerId);
+    const cleanup = () => {
+      target.removeEventListener("pointermove", move);
+      target.removeEventListener("pointerup", cleanup);
+      target.removeEventListener("pointercancel", cleanup);
+      target.removeEventListener("lostpointercapture", cleanup);
+      if (target.hasPointerCapture(pointerId))
+        target.releasePointerCapture(pointerId);
+    };
+    const move = (ev) => {
+      if (ev.pointerId !== pointerId) return;
+      if (ev.pointerType === "mouse" && ev.buttons !== 1) {
+        cleanup();
+        return;
+      }
       patchItem(item.id, {
         x: Math.max(
           0,
@@ -319,15 +470,14 @@ function Maker() {
           Math.min(92, originY + ((ev.clientY - startY) / rect.height) * 100),
         ),
       });
-    const end = () => {
-      e.currentTarget.removeEventListener("pointermove", move);
-      e.currentTarget.removeEventListener("pointerup", end);
     };
-    e.currentTarget.addEventListener("pointermove", move);
-    e.currentTarget.addEventListener("pointerup", end);
+    target.addEventListener("pointermove", move);
+    target.addEventListener("pointerup", cleanup);
+    target.addEventListener("pointercancel", cleanup);
+    target.addEventListener("lostpointercapture", cleanup);
   };
   const add = (type) =>
-    setItems((list) => [
+    (remember(), setItems((list) => [
       ...list,
       {
         id: crypto.randomUUID(),
@@ -346,9 +496,28 @@ function Maker() {
         size: 100,
         side,
       },
-    ]);
+    ]));
+  const duplicateSelected = () => {
+    const source = items.find((item) => item.id === selected);
+    if (!source) return;
+    remember();
+    const copy = {
+      ...source,
+      id: crypto.randomUUID(),
+      x: Math.min(88, source.x + 4),
+      y: Math.min(88, source.y + 4),
+    };
+    setItems((list) => [...list, copy]);
+    setSelected(copy.id);
+  };
+  const centerSelected = () => {
+    if (!selected) return;
+    remember();
+    patchItem(selected, { x: 50, y: 46 });
+  };
   const addImage = (file) => {
     if (!file?.type.startsWith("image/")) return;
+    remember();
     const reader = new FileReader();
     reader.onload = () =>
       setItems((list) => [
@@ -411,7 +580,7 @@ function Maker() {
             </div>
             <fieldset className="choice-group">
               <legend>
-                템플릿 <small>50</small>
+                템플릿 <small>{templates.length}</small>
               </legend>
               <div className="template-grid react-template-grid">
                 {templates.map((t) => (
@@ -419,9 +588,19 @@ function Maker() {
                     type="button"
                     key={t.id}
                     className={template.id === t.id ? "active" : ""}
+                    aria-pressed={template.id === t.id}
+                    title={t.name}
                     onClick={() => choose(t)}
                   >
-                    <span className={`template-swatch swatch-${t.family}`}>
+                    <span
+                      className="template-swatch"
+                      data-variant={t.motif}
+                      style={{
+                        "--mini-x": `${t.layout.name[0]}%`,
+                        "--mini-y": `${Math.max(8, t.layout.name[1] / 2)}px`,
+                        "--mini-w": `${Math.max(24, Math.min(54, t.layout.name[2] / 3))}%`,
+                      }}
+                    >
                       <i />
                       <b>
                         {t.name}
@@ -462,6 +641,12 @@ function Maker() {
                     ["wood", "우드"],
                     ["hologram", "홀로그램"],
                     ["linen", "린넨"],
+                    ["leather", "프리미엄 가죽"],
+                    ["pearl", "펄 코팅"],
+                    ["carbon", "카본 파이버"],
+                    ["recycled", "재생지"],
+                    ["terrazzo", "테라조"],
+                    ["frosted", "프로스트 반투명"],
                   ].map((x) => (
                     <option value={x[0]} key={x[0]}>
                       {x[1]}
@@ -521,7 +706,14 @@ function Maker() {
               selected={items.find((x) => x.id === selected)}
               onSize={(size) => patchItem(selected, { size })}
               onAdd={add}
+              onDuplicate={duplicateSelected}
+              onCenter={centerSelected}
+              onUndo={undo}
+              onRedo={redo}
+              canUndo={historyRef.current.length > 0}
+              canRedo={futureRef.current.length > 0}
               onDelete={() => {
+                remember();
                 setItems((x) => x.filter((i) => i.id !== selected));
                 setSelected(null);
               }}
@@ -529,13 +721,18 @@ function Maker() {
             <div className="preview-stage">
               <article
                 ref={cardRef}
-                className={`business-card layout-${template.family}`}
+                className="business-card card-design"
                 data-material={material}
                 data-corners={corners}
+                data-variant={template.motif}
                 style={{
                   "--card-accent": colors.accent,
                   "--card-bg": colors.bg,
                   "--card-text": colors.text,
+                  "--design-angle": `${template.angle}deg`,
+                  "--motif-x": `${template.motifX}%`,
+                  "--motif-y": `${template.motifY}%`,
+                  "--motif-size": `${template.motifSize}%`,
                   fontFamily: font,
                 }}
                 onDragOver={(e) => e.preventDefault()}
@@ -556,7 +753,11 @@ function Maker() {
                       selected={selected === item.id}
                       onPointerDown={(e) => dragStart(e, item)}
                       onSelect={() => setSelected(item.id)}
-                      onText={(text) => patchItem(item.id, { text })}
+                      onText={(text) => {
+                        if (text === item.text) return;
+                        remember();
+                        patchItem(item.id, { text });
+                      }}
                     />
                   ))}
               </article>
@@ -661,7 +862,18 @@ function DataProtection({ items, setItems, autoSave, setAutoSave }) {
   );
 }
 
-function EditorToolbar({ selected, onSize, onAdd, onDelete }) {
+function EditorToolbar({
+  selected,
+  onSize,
+  onAdd,
+  onDelete,
+  onDuplicate,
+  onCenter,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
+}) {
   const [type, setType] = useState("text");
   return (
     <div className="canvas-toolbar">
@@ -696,6 +908,18 @@ function EditorToolbar({ selected, onSize, onAdd, onDelete }) {
           onChange={(e) => onSize(+e.target.value)}
         />
       </label>
+      <button disabled={!selected} onClick={onDuplicate} title="선택 요소 복제">
+        복제
+      </button>
+      <button disabled={!selected} onClick={onCenter} title="캔버스 가운데 정렬">
+        가운데
+      </button>
+      <button disabled={!canUndo} onClick={onUndo} title="실행 취소">
+        ↶
+      </button>
+      <button disabled={!canRedo} onClick={onRedo} title="다시 실행">
+        ↷
+      </button>
       <button disabled={!selected} onClick={onDelete}>
         삭제
       </button>
@@ -711,6 +935,7 @@ function CardItem({ item, selected, onPointerDown, onSelect, onText }) {
         left: `${item.x}%`,
         top: `${item.y}%`,
         transform: `scale(${item.size / 100})`,
+        textAlign: item.align || "left",
       }}
       onPointerDown={onPointerDown}
       onClick={onSelect}
@@ -934,7 +1159,7 @@ const ResumeSheet = React.forwardRef(
       className={`resume-sheet resume-${tpl.base} resume-variant-${tpl.variant}`}
       style={{ fontFamily: font }}
     >
-      <header className="resume-head">
+      <header className={`resume-head ${photo ? "has-photo" : ""}`}>
         {photo && <img className="resume-photo" src={photo} />}
         <div>
           <h2>{data.name}</h2>
@@ -1071,6 +1296,17 @@ function Legal({ type }) {
           <p>
             생성 결과의 정확성과 인쇄 적합성은 사용자가 최종 확인해야 합니다.
           </p>
+          {type === "privacy" && (
+            <>
+              <h2>Google AdSense 및 쿠키</h2>
+              <p>
+                Cardly는 서비스 운영을 위해 Google AdSense 광고를 사용할 수 있습니다.
+                Google 및 광고 파트너는 광고 제공, 빈도 제한, 성과 측정과 맞춤형 광고를
+                위해 쿠키 또는 유사한 기술을 사용할 수 있습니다. 사용자는 브라우저의
+                쿠키 설정이나 Google 광고 설정에서 맞춤형 광고 사용을 관리할 수 있습니다.
+              </p>
+            </>
+          )}
         </div>
       </main>
     </Shell>
