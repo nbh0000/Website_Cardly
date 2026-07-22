@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nbh0000.github.io/Ai_Project/sitemap.xml
