@@ -144,15 +144,15 @@ function Header() {
   }, [dark]);
   return (
     <header className="site-header">
-      <a className="brand" href="/">
+      <a className="brand" href="index.html">
         <span className="brand-mark">C</span>
         <span>Cardly</span>
       </a>
       <nav className="site-nav">
-        <a href="/maker.html">명함 만들기</a>
-        <a href="/resume.html">이력서 만들기</a>
-        <a href="/about.html">소개</a>
-        <a href="/contact.html">문의</a>
+        <a href="maker.html">명함 만들기</a>
+        <a href="resume.html">이력서 만들기</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html">문의</a>
       </nav>
       <button className="theme-toggle" onClick={() => setDark(!dark)}>
         {dark ? "☀ 화이트" : "☾ 다크"}
@@ -164,14 +164,14 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-inner section-shell">
-        <a className="brand" href="/">
+        <a className="brand" href="index.html">
           <span className="brand-mark">C</span>Cardly
         </a>
         <nav>
-          <a href="/maker.html">명함 만들기</a>
-          <a href="/resume.html">이력서 만들기</a>
-          <a href="/privacy.html">개인정보처리방침</a>
-          <a href="/terms.html">이용약관</a>
+          <a href="maker.html">명함 만들기</a>
+          <a href="resume.html">이력서 만들기</a>
+          <a href="privacy.html">개인정보처리방침</a>
+          <a href="terms.html">이용약관</a>
         </nav>
       </div>
       <p className="copyright">© 2026 Cardly.</p>
@@ -202,10 +202,10 @@ function Home() {
             </h1>
             <p>명함과 이력서를 자유롭게 편집하고 설치 없이 바로 저장하세요.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="/maker.html">
+              <a className="button button-primary" href="maker.html">
                 명함 만들기 →
               </a>
-              <a className="button button-secondary" href="/resume.html">
+              <a className="button button-secondary" href="resume.html">
                 이력서 만들기
               </a>
             </div>
@@ -299,7 +299,7 @@ function Maker() {
       list.map((item) => (item.id === id ? { ...item, ...patch } : item)),
     );
   const dragStart = (e, item) => {
-    if (e.target.isContentEditable) return;
+    if (e.detail > 1) return;
     e.preventDefault();
     setSelected(item.id);
     const rect = cardRef.current.getBoundingClientRect(),
@@ -368,8 +368,13 @@ function Maker() {
   };
   React.useEffect(() => {
     localStorage.setItem("cardly-autosave", autoSave ? "on" : "off");
-    if (autoSave)
-      localStorage.setItem("cardly-project", JSON.stringify({ items }));
+    if (autoSave) {
+      try {
+        localStorage.setItem("cardly-project", JSON.stringify({ items }));
+      } catch {
+        setAutoSave(false);
+      }
+    }
   }, [autoSave, items]);
   const save = async () => {
     const { default: html2canvas } = await import("html2canvas");
@@ -769,7 +774,11 @@ function Resume() {
       (data.summary.length >= 40 ? 15 : data.summary ? 8 : 0) +
       (data.experience.length >= 30 ? 20 : data.experience ? 10 : 0) +
       (data.education ? 10 : 0) +
-      (data.skills.split(",").filter(Boolean).length >= 4 ? 15 : 8),
+      (data.skills.split(",").filter(Boolean).length >= 4
+        ? 15
+        : data.skills.trim()
+          ? 8
+          : 0),
   );
   const visibleTemplates =
     category === "전체"
@@ -1084,5 +1093,5 @@ const Page = path.endsWith("maker.html")
 createRoot(document.getElementById("root")).render(<Page />);
 if ("serviceWorker" in navigator)
   window.addEventListener("load", () =>
-    navigator.serviceWorker.register("/sw.js"),
+    navigator.serviceWorker.register("./sw.js"),
   );

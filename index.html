@@ -1,2 +1,42 @@
-<!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#635bff"><meta name="description" content="Cardly 무료 명함·이력서 제작 웹앱"><link rel="manifest" href="/manifest.webmanifest"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet"><title>무료 명함·이력서 제작기 | Cardly</title></head><body><div id="root"><main id="localNotice" style="max-width:680px;margin:12vh auto;padding:32px;font-family:sans-serif;line-height:1.7"><h1>Cardly React 웹앱</h1><p>이 소스 파일은 직접 열 수 없습니다. 폴더의 <b>start-cardly.cmd</b>를 실행하거나 터미널에서 <b>npm run dev</b>를 실행해 주세요.</p></main></div><script>if(location.protocol!=="file:")document.getElementById("localNotice").remove()</script><script type="module" src="/src/main.jsx"></script></body></html>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#635bff" />
+    <meta name="description" content="Cardly 무료 명함·이력서 제작 웹앱" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>무료 명함·이력서 제작기 | Cardly</title>
+  </head>
+  <body>
+    <div id="root">
+      <main
+        id="localNotice"
+        style="
+          max-width: 680px;
+          margin: 12vh auto;
+          padding: 32px;
+          font-family: sans-serif;
+          line-height: 1.7;
+        "
+      >
+        <h1>Cardly React 웹앱</h1>
+        <p>
+          이 소스 파일은 직접 열 수 없습니다. 폴더의 <b>start-cardly.cmd</b>를
+          실행하거나 터미널에서 <b>npm run dev</b>를 실행해 주세요.
+        </p>
+      </main>
+    </div>
+    <script>
+      if (location.protocol !== "file:")
+        document.getElementById("localNotice").remove();
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
