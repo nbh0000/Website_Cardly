@@ -1788,6 +1788,34 @@ a {
   padding-bottom: 28px;
   border-bottom: 2px solid #1b2230;
 }
+.resume-sheet[data-resume-art="true"] {
+  background-color: #fff;
+  background-image: var(--resume-art);
+  background-repeat: no-repeat;
+  background-size: 500% 200%;
+  background-position: var(--resume-art-position);
+}
+.resume-ai-thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  border-radius: 8px;
+  background-image: var(--resume-art);
+  background-repeat: no-repeat;
+  background-size: 500% 200%;
+  background-position: var(--resume-art-position);
+}
+.resume-ai-thumb b {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: #fff;
+  background: rgba(18, 20, 30, .72);
+  font-size: 9px;
+}
 
 /* One hundred unique card compositions: ten families × ten variants. */
 .business-card[data-variant="0"] {
@@ -1842,16 +1870,16 @@ a {
 }
 .business-card[data-art] {
   background-color: var(--card-bg);
-  background-image: url("/card-background-atlas.png");
+  background-image: var(--art-image);
   background-repeat: no-repeat;
-  background-size: 400% 200%;
+  background-size: 400% 500%;
   background-position: var(--art-position);
 }
 .template-swatch[data-art] {
   background-color: #f7f4ee;
-  background-image: url("/card-background-atlas.png");
+  background-image: var(--art-image);
   background-repeat: no-repeat;
-  background-size: 400% 200%;
+  background-size: 400% 500%;
   background-position: var(--art-position);
 }
 
@@ -2293,6 +2321,46 @@ a {
   box-shadow: 0 28px 65px rgba(31, 27, 50, .2);
   isolation: isolate;
 }
+.mobile-invite[data-invite-art="true"] {
+  background-color: #fffdfa;
+  background-image: var(--invite-art);
+  background-repeat: no-repeat;
+  background-size: 500% 200%;
+  background-position: var(--invite-art-position);
+}
+.mobile-invite[data-invite-art="true"] .invite-main-copy,
+.mobile-invite[data-invite-art="true"] .invite-info {
+  border-radius: 14px;
+  background: color-mix(in srgb, #fff 78%, transparent);
+  backdrop-filter: blur(5px);
+}
+.mobile-invite[data-invite-art="true"] .invite-main-copy { padding: 14px; margin-inline: -14px; }
+.mobile-invite[data-invite-art="true"] .invite-info { padding: 16px 14px 12px; margin-inline: -14px; }
+.mobile-invite.invite-dark-art { color: #fff; }
+.mobile-invite.invite-dark-art .invite-main-copy,
+.mobile-invite.invite-dark-art .invite-info { background: rgba(10, 13, 24, .72); }
+.mobile-invite.invite-dark-art .invite-message,
+.mobile-invite.invite-dark-art .invite-info small { color: #e4e6ef; }
+.mobile-invite[data-invite-art="true"] .invite-orbit { display: none; }
+.invite-template-picker { margin: 18px 0; padding: 0; border: 0; }
+.invite-template-picker legend { margin-bottom: 10px; font-weight: 900; }
+.invite-template-picker legend small { color: var(--muted); }
+.invite-template-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.invite-template-grid button {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-image: var(--invite-art);
+  background-repeat: no-repeat;
+  background-size: 500% 200%;
+  background-position: var(--invite-art-position);
+  cursor: pointer;
+}
+.invite-template-grid button.active { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(99,91,255,.16); }
+.invite-template-grid button span { position: absolute; right: 3px; bottom: 3px; padding: 1px 3px; border-radius: 4px; color: #fff; background: rgba(0,0,0,.58); font-size: 8px; }
 .invite-orbit {
   position: absolute;
   z-index: -1;

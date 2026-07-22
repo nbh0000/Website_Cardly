@@ -117,28 +117,21 @@ const layoutArchetypes = [
   { company: [8, 13, 88], name: [57, 26, 148], role: [57, 45, 86], contact: [[57, 65], [57, 75], [57, 85]], align: "left", motif: 8 },
   { company: [8, 78, 84], name: [8, 25, 148], role: [8, 44, 88], contact: [[50, 25], [50, 36], [50, 47]], align: "left", motif: 9 },
 ];
-const cleanMotifs = [0, 1, 2, 4, 5, 9];
-const artPositions = [
-  "0% 0%", "33.333% 0%", "66.666% 0%", "100% 0%",
-  "0% 100%", "33.333% 100%", "66.666% 100%", "100% 100%",
-];
 const templates = Array.from({ length: 100 }, (_, index) => {
   const base = layoutArchetypes[index % layoutArchetypes.length];
-  const edition = Math.floor(index / layoutArchetypes.length);
-  const offsetX = (edition % 5) - 2;
-  const offsetY = Math.floor(edition / 5) * 2;
-  const adjust = ([x, y, size]) => [
-    Math.max(3, Math.min(88, x + offsetX)),
-    Math.max(5, Math.min(90, y + offsetY)),
-    size + ((edition * 7 + index) % 5) * 3,
-  ];
+  const atlas = Math.floor(index / 20) + 1;
+  const cell = index % 20;
+  const column = cell % 4;
+  const row = Math.floor(cell / 4);
+  const adjust = ([x, y, size]) => [x, y, size];
   return {
     id: index + 1,
-    name: `디자인 ${String(index + 1).padStart(3, "0")}`,
-    motif: cleanMotifs[(index + edition) % cleanMotifs.length],
-    art: index % 10 < 8 ? index % 8 : null,
-    artPosition: index % 10 < 8 ? artPositions[index % 8] : null,
-    textColor: [1, 4, 5, 7].includes(index % 8) && index % 10 < 8 ? "#f8f5ed" : "#171724",
+    name: `AI 디자인 ${String(index + 1).padStart(3, "0")}`,
+    motif: 0,
+    art: atlas,
+    artUrl: `/card-atlas-${atlas}.png`,
+    artPosition: `${column * 33.333}% ${row * 25}%`,
+    textColor: atlas === 4 || (atlas === 1 && [1, 2, 5, 10, 12, 15, 19].includes(cell)) ? "#f8f5ed" : "#171724",
     angle: (index * 17) % 180,
     motifX: 10 + ((index * 29) % 78),
     motifY: 8 + ((index * 37) % 78),
@@ -148,8 +141,8 @@ const templates = Array.from({ length: 100 }, (_, index) => {
       name: adjust(base.name),
       role: adjust(base.role),
       contacts: base.contact.map(([x, y], contactIndex) => [
-        Math.max(3, Math.min(88, x + offsetX + (edition % 2 ? contactIndex : 0))),
-        Math.max(5, Math.min(90, y + offsetY)),
+        x,
+        y,
       ]),
       align: base.align,
     },
@@ -212,20 +205,19 @@ const resumeCategories = [
   "마케팅·기획",
   "영문",
 ];
-const resumeTemplates = [
-  "minimal",
-  "professional",
-  "sidebar",
-  "editorial",
-  "creative",
-].flatMap((base, i) =>
-  ["clean", "navy", "warm", "contrast"].map((variant, j) => ({
-    id: i * 4 + j + 1,
-    base,
-    variant,
-    category: resumeCategories[(i * 4 + j) % resumeCategories.length],
-  })),
-);
+const resumeTemplates = Array.from({ length: 50 }, (_, index) => {
+  const atlas = Math.floor(index / 10) + 1;
+  const cell = index % 10;
+  return {
+    id: index + 1,
+    base: "ai",
+    variant: `ai-${index + 1}`,
+    atlas,
+    artUrl: `/resume-atlas-${atlas}.png`,
+    artPosition: `${(cell % 5) * 25}% ${Math.floor(cell / 5) * 100}%`,
+    category: resumeCategories[index % resumeCategories.length],
+  };
+});
 
 function Header() {
   const [dark, setDark] = useState(
@@ -621,6 +613,7 @@ function Maker() {
                         "--mini-y": `${Math.max(8, t.layout.name[1] / 2)}px`,
                         "--mini-w": `${Math.max(24, Math.min(54, t.layout.name[2] / 3))}%`,
                         "--art-position": t.artPosition || "0% 0%",
+                        "--art-image": `url(${t.artUrl})`,
                       }}
                     >
                       <i />
@@ -758,6 +751,7 @@ function Maker() {
                   "--motif-y": `${template.motifY}%`,
                   "--motif-size": `${template.motifSize}%`,
                   "--art-position": template.artPosition || "0% 0%",
+                  "--art-image": `url(${template.artUrl})`,
                   fontFamily: font,
                 }}
                 onDragOver={(e) => e.preventDefault()}
@@ -1119,13 +1113,13 @@ function Resume() {
         <div className="section-heading">
           <span className="eyebrow">RESUME BUILDER</span>
           <h1>이력서 만들기</h1>
-          <p>20가지 템플릿과 사진으로 이력서를 완성하세요.</p>
+          <p>50가지 AI 디자인 템플릿과 사진으로 이력서를 완성하세요.</p>
         </div>
         <div className="resume-studio">
           <aside className="resume-editor">
             <fieldset className="resume-template-picker">
               <legend>
-                템플릿 선택 <small>20</small>
+                템플릿 선택 <small>{resumeTemplates.length}</small>
               </legend>
               <div className="resume-category-tabs">
                 {["전체", ...resumeCategories].map((item) => (
@@ -1147,7 +1141,7 @@ function Resume() {
                       checked={tpl.id === t.id}
                       onChange={() => setTpl(t)}
                     />
-                    <span className={`resume-thumb-${t.variant}`}>
+                    <span className="resume-ai-thumb" style={{ "--resume-art": `url(${t.artUrl})`, "--resume-art-position": t.artPosition }}>
                       <b>{String(t.id).padStart(2, "0")}</b>
                       <i />
                     </span>
@@ -1297,7 +1291,8 @@ const ResumeSheet = React.forwardRef(
     <article
       ref={ref}
       className={`resume-sheet resume-${tpl.base} resume-variant-${tpl.variant}`}
-      style={{ fontFamily: font }}
+      style={{ fontFamily: font, "--resume-art": `url(${tpl.artUrl})`, "--resume-art-position": tpl.artPosition }}
+      data-resume-art="true"
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onBlockSelect(null);
       }}
@@ -1384,10 +1379,24 @@ const invitePresets = {
   },
 };
 
+const inviteTemplates = Array.from({ length: 50 }, (_, index) => {
+  const atlas = Math.floor(index / 10) + 1;
+  const cell = index % 10;
+  const kind = atlas === 1 ? "wedding" : atlas === 2 ? "birthday" : atlas === 3 ? "gathering" : "event";
+  return {
+    id: index + 1,
+    kind,
+    artUrl: `/invite-atlas-${atlas}.png`,
+    artPosition: `${(cell % 5) * 25}% ${Math.floor(cell / 5) * 100}%`,
+    dark: atlas === 4 && [0, 1, 3, 4, 7].includes(cell),
+  };
+});
+
 function Invite() {
   const inviteRef = useRef();
   const [kind, setKind] = useState("wedding");
   const [photo, setPhoto] = useState("");
+  const [inviteTemplate, setInviteTemplate] = useState(inviteTemplates[0]);
   const [details, setDetails] = useState({
     ...invitePresets.wedding,
     date: "2026-10-24",
@@ -1399,6 +1408,7 @@ function Invite() {
   const changeKind = (nextKind) => {
     const preset = invitePresets[nextKind];
     setKind(nextKind);
+    setInviteTemplate(inviteTemplates.find((template) => template.kind === nextKind));
     setDetails((current) => ({ ...current, ...preset }));
   };
   const loadInvitePhoto = (file) => {
@@ -1437,6 +1447,21 @@ function Invite() {
                 </button>
               ))}
             </div>
+            <fieldset className="invite-template-picker">
+              <legend>AI 템플릿 <small>{inviteTemplates.filter((template) => template.kind === kind).length}</small></legend>
+              <div className="invite-template-grid">
+                {inviteTemplates.filter((template) => template.kind === kind).map((template) => (
+                  <button
+                    type="button"
+                    key={template.id}
+                    className={inviteTemplate.id === template.id ? "active" : ""}
+                    onClick={() => setInviteTemplate(template)}
+                    aria-label={`초대장 템플릿 ${template.id}`}
+                    style={{ "--invite-art": `url(${template.artUrl})`, "--invite-art-position": template.artPosition }}
+                  ><span>{String(template.id).padStart(2, "0")}</span></button>
+                ))}
+              </div>
+            </fieldset>
             <label className="field">제목<input value={details.title} onChange={(e) => update("title", e.target.value)} /></label>
             <label className="field">이름·행사명<input value={details.names} onChange={(e) => update("names", e.target.value)} /></label>
             <label className="field">초대 메시지<textarea rows="4" value={details.message} onChange={(e) => update("message", e.target.value)} /></label>
@@ -1456,7 +1481,16 @@ function Invite() {
           </aside>
           <section className="invite-preview-panel">
             <div className="preview-toolbar"><b>모바일 미리보기</b><span>9:16</span></div>
-            <article ref={inviteRef} className={`mobile-invite invite-${details.theme}`} style={{ "--invite-accent": details.accent }}>
+            <article
+              ref={inviteRef}
+              className={`mobile-invite invite-${details.theme} ${inviteTemplate.dark ? "invite-dark-art" : ""}`}
+              data-invite-art="true"
+              style={{
+                "--invite-accent": details.accent,
+                "--invite-art": `url(${inviteTemplate.artUrl})`,
+                "--invite-art-position": inviteTemplate.artPosition,
+              }}
+            >
               <div className="invite-orbit" />
               <span className="invite-eyebrow">{details.eyebrow}</span>
               {photo && <img className="invite-photo" src={photo} alt="초대장 대표" />}
