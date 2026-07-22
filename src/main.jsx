@@ -117,7 +117,12 @@ const layoutArchetypes = [
   { company: [8, 13, 88], name: [57, 26, 148], role: [57, 45, 86], contact: [[57, 65], [57, 75], [57, 85]], align: "left", motif: 8 },
   { company: [8, 78, 84], name: [8, 25, 148], role: [8, 44, 88], contact: [[50, 25], [50, 36], [50, 47]], align: "left", motif: 9 },
 ];
-const templates = Array.from({ length: 200 }, (_, index) => {
+const cleanMotifs = [0, 1, 2, 4, 5, 9];
+const artPositions = [
+  "0% 0%", "33.333% 0%", "66.666% 0%", "100% 0%",
+  "0% 100%", "33.333% 100%", "66.666% 100%", "100% 100%",
+];
+const templates = Array.from({ length: 100 }, (_, index) => {
   const base = layoutArchetypes[index % layoutArchetypes.length];
   const edition = Math.floor(index / layoutArchetypes.length);
   const offsetX = (edition % 5) - 2;
@@ -130,7 +135,10 @@ const templates = Array.from({ length: 200 }, (_, index) => {
   return {
     id: index + 1,
     name: `디자인 ${String(index + 1).padStart(3, "0")}`,
-    motif: (base.motif + edition) % 10,
+    motif: cleanMotifs[(index + edition) % cleanMotifs.length],
+    art: index % 10 < 8 ? index % 8 : null,
+    artPosition: index % 10 < 8 ? artPositions[index % 8] : null,
+    textColor: [1, 4, 5, 7].includes(index % 8) && index % 10 < 8 ? "#f8f5ed" : "#171724",
     angle: (index * 17) % 180,
     motifX: 10 + ((index * 29) % 78),
     motifY: 8 + ((index * 37) % 78),
@@ -234,10 +242,11 @@ function Header() {
         <span>Cardly</span>
       </a>
       <nav className="site-nav">
-        <a href="maker.html">명함 만들기</a>
-        <a href="resume.html">이력서 만들기</a>
-        <a href="about.html">소개</a>
-        <a href="contact.html">문의</a>
+        <a href="/business-card/">명함 만들기</a>
+        <a href="/resume/">이력서 만들기</a>
+        <a href="/invitation/">초대장 만들기</a>
+        <a href="/about/">소개</a>
+        <a href="/contact/">문의</a>
       </nav>
       <button className="theme-toggle" onClick={() => setDark(!dark)}>
         {dark ? "☀ 화이트" : "☾ 다크"}
@@ -253,10 +262,11 @@ function Footer() {
           <span className="brand-mark">C</span>Cardly
         </a>
         <nav>
-          <a href="maker.html">명함 만들기</a>
-          <a href="resume.html">이력서 만들기</a>
-          <a href="privacy.html">개인정보처리방침</a>
-          <a href="terms.html">이용약관</a>
+          <a href="/business-card/">명함 만들기</a>
+          <a href="/resume/">이력서 만들기</a>
+          <a href="/invitation/">초대장 만들기</a>
+          <a href="/privacy/">개인정보처리방침</a>
+          <a href="/terms/">이용약관</a>
         </nav>
       </div>
       <p className="copyright">© 2026 Cardly.</p>
@@ -279,25 +289,28 @@ function Home() {
       <main>
         <section className="hero section-shell">
           <div className="hero-copy">
-            <span className="eyebrow">FREE DESIGN STUDIO</span>
+            <span className="eyebrow">DESIGN YOUR MOMENT</span>
             <h1>
-              나를 보여주는
+              한 장에 담는
               <br />
-              <em>한 장의 디자인.</em>
+              <em>당신의 순간.</em>
             </h1>
-            <p>명함과 이력서를 자유롭게 편집하고 설치 없이 바로 저장하세요.</p>
+            <p>명함, 이력서, 모바일 초대장을 누구나 감각적으로 만들고 바로 저장하세요.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="maker.html">
+              <a className="button button-primary" href="/business-card/">
                 명함 만들기 →
               </a>
-              <a className="button button-secondary" href="resume.html">
+              <a className="button button-secondary" href="/resume/">
                 이력서 만들기
+              </a>
+              <a className="button button-secondary" href="/invitation/">
+                초대장 만들기
               </a>
             </div>
             <ul className="trust-list">
-              <li>React 웹앱</li>
-              <li>모바일 터치 편집</li>
-              <li>PNG·PDF 저장</li>
+              <li>설치 없이 바로 제작</li>
+              <li>모바일에서도 편집</li>
+              <li>고화질 PNG·PDF 저장</li>
             </ul>
           </div>
           <div className="hero-visual">
@@ -315,12 +328,12 @@ function Home() {
         <section className="features section-shell">
           <div className="section-heading centered-heading">
             <span className="eyebrow">CARDLY TOOLS</span>
-            <h2>필요한 문서를 더 쉽게</h2>
+            <h2>필요한 디자인을 더 쉽게</h2>
           </div>
           <div className="feature-grid">
             <article>
               <span className="feature-number">01</span>
-              <h3>50가지 명함</h3>
+              <h3>100가지 프리미엄 명함</h3>
               <p>
                 재질과 그래픽이 다른 템플릿을 고르고 모든 요소를 직접
                 편집하세요.
@@ -337,7 +350,13 @@ function Home() {
             <article>
               <span className="feature-number">03</span>
               <h3>사진 이력서</h3>
-              <p>사진을 드래그해 넣고 5가지 템플릿을 PDF로 저장하세요.</p>
+              <p>사진을 드래그해 넣고 20가지 템플릿을 PDF로 저장하세요.</p>
+            </article>
+            <article className="feature-invite">
+              <span className="feature-number">04 · NEW</span>
+              <h3>Cardly Invite</h3>
+              <p>청첩장, 생일, 모임, 행사를 위한 모바일 초대장을 실시간으로 완성하세요.</p>
+              <a href="/invitation/">초대장 만들기 →</a>
             </article>
           </div>
         </section>
@@ -407,6 +426,7 @@ function Maker() {
   const choose = (t) => {
     remember();
     setTemplate(t);
+    setColors((current) => ({ ...current, text: t.textColor }));
     const positions = {
       company: t.layout.company,
       name: t.layout.name,
@@ -595,10 +615,12 @@ function Maker() {
                     <span
                       className="template-swatch"
                       data-variant={t.motif}
+                      data-art={t.art ?? undefined}
                       style={{
                         "--mini-x": `${t.layout.name[0]}%`,
                         "--mini-y": `${Math.max(8, t.layout.name[1] / 2)}px`,
                         "--mini-w": `${Math.max(24, Math.min(54, t.layout.name[2] / 3))}%`,
+                        "--art-position": t.artPosition || "0% 0%",
                       }}
                     >
                       <i />
@@ -725,6 +747,7 @@ function Maker() {
                 data-material={material}
                 data-corners={corners}
                 data-variant={template.motif}
+                data-art={template.art ?? undefined}
                 style={{
                   "--card-accent": colors.accent,
                   "--card-bg": colors.bg,
@@ -733,6 +756,7 @@ function Maker() {
                   "--motif-x": `${template.motifX}%`,
                   "--motif-y": `${template.motifY}%`,
                   "--motif-size": `${template.motifSize}%`,
+                  "--art-position": template.artPosition || "0% 0%",
                   fontFamily: font,
                 }}
                 onDragOver={(e) => e.preventDefault()}
@@ -952,11 +976,41 @@ function CardItem({ item, selected, onPointerDown, onSelect, onText }) {
   );
 }
 
+function ResumeBlock({ id, layout, selected, onPointerDown, onSelect, className = "", children }) {
+  const block = layout[id];
+  if (block?.hidden) return null;
+  return (
+    <div
+      className={`resume-canvas-block ${className} ${selected ? "is-selected" : ""}`}
+      style={{
+        left: `${block?.x || 0}%`,
+        top: `${block?.y || 0}%`,
+        transform: `scale(${(block?.size || 100) / 100})`,
+      }}
+      onPointerDown={(event) => onPointerDown(event, id)}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect(id);
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function Resume() {
   const sheetRef = useRef();
   const [tpl, setTpl] = useState(resumeTemplates[0]);
   const [font, setFont] = useState('"Noto Sans KR",sans-serif');
   const [photo, setPhoto] = useState("");
+  const [selectedBlock, setSelectedBlock] = useState(null);
+  const [resumeLayout, setResumeLayout] = useState(() =>
+    Object.fromEntries(
+      ["photo", "identity", "contact", "profile", "experience", "education", "skills"].map(
+        (id) => [id, { x: 0, y: 0, size: 100, hidden: false }],
+      ),
+    ),
+  );
   const [category, setCategory] = useState("전체");
   const [data, setData] = useState({
     name: "김카들리",
@@ -976,6 +1030,43 @@ function Resume() {
       reader.onload = () => setPhoto(reader.result);
       reader.readAsDataURL(file);
     }
+  };
+  const patchResumeBlock = (id, patch) =>
+    setResumeLayout((layout) => ({
+      ...layout,
+      [id]: { ...layout[id], ...patch },
+    }));
+  const dragResumeBlock = (event, id) => {
+    if (event.detail > 1) return;
+    event.preventDefault();
+    setSelectedBlock(id);
+    const target = event.currentTarget;
+    const pointerId = event.pointerId;
+    const rect = sheetRef.current.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const origin = resumeLayout[id];
+    target.setPointerCapture(pointerId);
+    const cleanup = () => {
+      target.removeEventListener("pointermove", move);
+      target.removeEventListener("pointerup", cleanup);
+      target.removeEventListener("pointercancel", cleanup);
+      if (target.hasPointerCapture(pointerId)) target.releasePointerCapture(pointerId);
+    };
+    const move = (nextEvent) => {
+      if (nextEvent.pointerId !== pointerId) return;
+      if (nextEvent.pointerType === "mouse" && nextEvent.buttons !== 1) {
+        cleanup();
+        return;
+      }
+      patchResumeBlock(id, {
+        x: Math.max(-35, Math.min(35, origin.x + ((nextEvent.clientX - startX) / rect.width) * 100)),
+        y: Math.max(-35, Math.min(35, origin.y + ((nextEvent.clientY - startY) / rect.height) * 100)),
+      });
+    };
+    target.addEventListener("pointermove", move);
+    target.addEventListener("pointerup", cleanup);
+    target.addEventListener("pointercancel", cleanup);
   };
   const save = async () => {
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
@@ -1138,6 +1229,38 @@ function Resume() {
               <b>실시간 미리보기</b>
               <span>A4</span>
             </div>
+            <div className="resume-canvas-toolbar">
+              <strong>{selectedBlock ? `${selectedBlock} 블록 선택됨` : "블록을 선택해 이동하세요"}</strong>
+              <label>
+                크기
+                <input
+                  type="range"
+                  min="70"
+                  max="150"
+                  value={selectedBlock ? resumeLayout[selectedBlock].size : 100}
+                  disabled={!selectedBlock}
+                  onChange={(event) => patchResumeBlock(selectedBlock, { size: +event.target.value })}
+                />
+              </label>
+              <button
+                disabled={!selectedBlock}
+                onClick={() => patchResumeBlock(selectedBlock, { hidden: true })}
+              >
+                숨기기
+              </button>
+              <button
+                onClick={() => {
+                  setResumeLayout(
+                    Object.fromEntries(
+                      Object.keys(resumeLayout).map((id) => [id, { x: 0, y: 0, size: 100, hidden: false }]),
+                    ),
+                  );
+                  setSelectedBlock(null);
+                }}
+              >
+                배치 초기화
+              </button>
+            </div>
             <ResumeSheet
               ref={sheetRef}
               tpl={tpl}
@@ -1145,6 +1268,10 @@ function Resume() {
               photo={photo}
               font={font}
               english={tpl.category === "영문"}
+              layout={resumeLayout}
+              selectedBlock={selectedBlock}
+              onBlockPointerDown={dragResumeBlock}
+              onBlockSelect={setSelectedBlock}
             />
           </section>
         </div>
@@ -1153,50 +1280,192 @@ function Resume() {
   );
 }
 const ResumeSheet = React.forwardRef(
-  ({ tpl, data, photo, font, english }, ref) => (
+  ({ tpl, data, photo, font, english, layout, selectedBlock, onBlockPointerDown, onBlockSelect }, ref) => (
     <article
       ref={ref}
       className={`resume-sheet resume-${tpl.base} resume-variant-${tpl.variant}`}
       style={{ fontFamily: font }}
+      onPointerDown={(event) => {
+        if (event.target === event.currentTarget) onBlockSelect(null);
+      }}
     >
       <header className={`resume-head ${photo ? "has-photo" : ""}`}>
-        {photo && <img className="resume-photo" src={photo} />}
-        <div>
+        {photo && (
+          <ResumeBlock id="photo" layout={layout} selected={selectedBlock === "photo"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
+            <img className="resume-photo" src={photo} alt="이력서 증명사진" />
+          </ResumeBlock>
+        )}
+        <ResumeBlock id="identity" layout={layout} selected={selectedBlock === "identity"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <h2>{data.name}</h2>
           <p>{data.title}</p>
-        </div>
-        <div className="resume-contact">
+        </ResumeBlock>
+        <ResumeBlock id="contact" className="resume-contact" layout={layout} selected={selectedBlock === "contact"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <span>{data.email}</span>
           <span>{data.phone}</span>
-        </div>
+        </ResumeBlock>
       </header>
       <div className="resume-body">
-        <section>
+        <ResumeBlock id="profile" layout={layout} selected={selectedBlock === "profile"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <h3>{english ? "PROFILE" : "소개"}</h3>
           <p>{data.summary}</p>
-        </section>
-        <section>
+        </ResumeBlock>
+        <ResumeBlock id="experience" layout={layout} selected={selectedBlock === "experience"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <h3>{english ? "EXPERIENCE" : "경력"}</h3>
           {data.experience.split("\n").map((x) => (
             <p key={x}>{x}</p>
           ))}
-        </section>
-        <section>
+        </ResumeBlock>
+        <ResumeBlock id="education" layout={layout} selected={selectedBlock === "education"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <h3>{english ? "EDUCATION" : "학력"}</h3>
           <p>{data.education}</p>
-        </section>
-        <section>
+        </ResumeBlock>
+        <ResumeBlock id="skills" layout={layout} selected={selectedBlock === "skills"} onPointerDown={onBlockPointerDown} onSelect={onBlockSelect}>
           <h3>{english ? "SKILLS" : "기술"}</h3>
           <div className="resume-skills">
             {data.skills.split(",").map((x) => (
               <span key={x}>{x.trim()}</span>
             ))}
           </div>
-        </section>
+        </ResumeBlock>
       </div>
     </article>
   ),
 );
+
+const invitePresets = {
+  wedding: {
+    label: "청첩장",
+    eyebrow: "WE ARE GETTING MARRIED",
+    title: "우리, 결혼합니다",
+    names: "김카들리  ·  이초대",
+    message: "서로의 하루를 아끼며 살아가겠습니다.\n소중한 날, 함께 축복해 주세요.",
+    accent: "#9b6f55",
+    theme: "wedding",
+  },
+  birthday: {
+    label: "생일",
+    eyebrow: "HAPPY BIRTHDAY",
+    title: "생일 파티에 초대해요!",
+    names: "카들리의 생일",
+    message: "맛있는 음식과 즐거운 이야기를 준비했어요.\n가벼운 마음으로 함께해 주세요.",
+    accent: "#ff6b73",
+    theme: "birthday",
+  },
+  gathering: {
+    label: "모임",
+    eyebrow: "SAVE THE DATE",
+    title: "우리, 오랜만에 만나요",
+    names: "2026 여름 모임",
+    message: "반가운 얼굴들과 느긋한 저녁을 보내요.\n참석 여부를 미리 알려주세요.",
+    accent: "#2e7d68",
+    theme: "gathering",
+  },
+  event: {
+    label: "행사",
+    eyebrow: "YOU ARE INVITED",
+    title: "새로운 시작을 공개합니다",
+    names: "CARDLY OPEN STUDIO",
+    message: "아이디어와 사람을 연결하는 특별한 시간.\nCardly의 첫 번째 행사에 초대합니다.",
+    accent: "#5b55e7",
+    theme: "event",
+  },
+};
+
+function Invite() {
+  const inviteRef = useRef();
+  const [kind, setKind] = useState("wedding");
+  const [photo, setPhoto] = useState("");
+  const [details, setDetails] = useState({
+    ...invitePresets.wedding,
+    date: "2026-10-24",
+    time: "오후 2:00",
+    place: "카들리 가든",
+    address: "서울특별시 중구 세종대로 110",
+    host: "김카들리",
+  });
+  const changeKind = (nextKind) => {
+    const preset = invitePresets[nextKind];
+    setKind(nextKind);
+    setDetails((current) => ({ ...current, ...preset }));
+  };
+  const loadInvitePhoto = (file) => {
+    if (!file?.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => setPhoto(reader.result);
+    reader.readAsDataURL(file);
+  };
+  const saveInvite = async () => {
+    const { default: html2canvas } = await import("html2canvas");
+    const canvas = await html2canvas(inviteRef.current, {
+      scale: 3,
+      useCORS: true,
+      backgroundColor: null,
+    });
+    const link = document.createElement("a");
+    link.download = `cardly-invite-${kind}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+  const update = (key, value) => setDetails((current) => ({ ...current, [key]: value }));
+  return (
+    <Shell>
+      <main className="invite-page section-shell">
+        <div className="section-heading">
+          <span className="eyebrow">CARDLY INVITE</span>
+          <h1>마음을 전하는 모바일 초대장</h1>
+          <p>청첩장부터 생일, 모임, 행사까지 한 장으로 아름답게 완성하세요.</p>
+        </div>
+        <div className="invite-studio">
+          <aside className="invite-editor">
+            <div className="invite-kind-tabs">
+              {Object.entries(invitePresets).map(([key, preset]) => (
+                <button key={key} className={kind === key ? "active" : ""} onClick={() => changeKind(key)}>
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+            <label className="field">제목<input value={details.title} onChange={(e) => update("title", e.target.value)} /></label>
+            <label className="field">이름·행사명<input value={details.names} onChange={(e) => update("names", e.target.value)} /></label>
+            <label className="field">초대 메시지<textarea rows="4" value={details.message} onChange={(e) => update("message", e.target.value)} /></label>
+            <div className="field-grid">
+              <label className="field">날짜<input type="date" value={details.date} onChange={(e) => update("date", e.target.value)} /></label>
+              <label className="field">시간<input value={details.time} onChange={(e) => update("time", e.target.value)} /></label>
+            </div>
+            <label className="field">장소<input value={details.place} onChange={(e) => update("place", e.target.value)} /></label>
+            <label className="field">주소<input value={details.address} onChange={(e) => update("address", e.target.value)} /></label>
+            <label className="field">주최자<input value={details.host} onChange={(e) => update("host", e.target.value)} /></label>
+            <label className="field invite-color">포인트 색상<input type="color" value={details.accent} onChange={(e) => update("accent", e.target.value)} /></label>
+            <label className="photo-drop">
+              <input type="file" accept="image/*" onChange={(e) => loadInvitePhoto(e.target.files[0])} />
+              <b>{photo ? "대표 사진 변경" : "대표 사진 추가"}</b>
+              <span>클릭해서 사진을 선택하세요</span>
+            </label>
+          </aside>
+          <section className="invite-preview-panel">
+            <div className="preview-toolbar"><b>모바일 미리보기</b><span>9:16</span></div>
+            <article ref={inviteRef} className={`mobile-invite invite-${details.theme}`} style={{ "--invite-accent": details.accent }}>
+              <div className="invite-orbit" />
+              <span className="invite-eyebrow">{details.eyebrow}</span>
+              {photo && <img className="invite-photo" src={photo} alt="초대장 대표" />}
+              <div className="invite-main-copy">
+                <p>{details.names}</p>
+                <h2>{details.title}</h2>
+                <div className="invite-rule" />
+                <p className="invite-message">{details.message}</p>
+              </div>
+              <dl className="invite-info">
+                <div><dt>DATE</dt><dd>{details.date} · {details.time}</dd></div>
+                <div><dt>PLACE</dt><dd>{details.place}<small>{details.address}</small></dd></div>
+                <div><dt>HOST</dt><dd>{details.host}</dd></div>
+              </dl>
+            </article>
+            <button className="button button-primary invite-save" onClick={saveInvite}>초대장 이미지 저장 ↓</button>
+          </section>
+        </div>
+      </main>
+    </Shell>
+  );
+}
 
 function About() {
   return (
@@ -1213,7 +1482,7 @@ function About() {
         <div className="guide-grid">
           <article className="guide-card">
             <h3>명함 편집기</h3>
-            <p>50가지 템플릿, 재질, 글꼴과 PPT형 요소 편집을 제공합니다.</p>
+            <p>100가지 프리미엄 템플릿, 고급 재질, 글꼴과 캔버스 편집을 제공합니다.</p>
           </article>
           <article className="guide-card">
             <h3>이력서 편집기</h3>
@@ -1313,17 +1582,19 @@ function Legal({ type }) {
   );
 }
 const path = location.pathname;
-const Page = path.endsWith("maker.html")
+const Page = path.includes("/business-card") || path.endsWith("maker.html")
   ? Maker
-  : path.endsWith("resume.html")
+  : path.includes("/resume/") || path.endsWith("resume.html")
     ? Resume
-    : path.endsWith("about.html")
+    : path.includes("/invitation") || path.endsWith("invite.html")
+      ? Invite
+    : path.includes("/about/") || path.endsWith("about.html")
       ? About
-      : path.endsWith("contact.html")
+      : path.includes("/contact/") || path.endsWith("contact.html")
         ? Contact
-        : path.endsWith("privacy.html")
+        : path.includes("/privacy/") || path.endsWith("privacy.html")
           ? () => <Legal type="privacy" />
-          : path.endsWith("terms.html")
+          : path.includes("/terms/") || path.endsWith("terms.html")
             ? () => <Legal type="terms" />
             : Home;
 createRoot(document.getElementById("root")).render(<Page />);
