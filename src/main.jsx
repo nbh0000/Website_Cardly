@@ -256,7 +256,7 @@ function Header() {
   }, [dark]);
   return (
     <header className="site-header">
-      <a className="brand" href="index.html">
+      <a className="brand" href="/" aria-label="Cardly 홈으로 이동">
         <span className="brand-mark">C</span>
         <span>Cardly</span>
       </a>
