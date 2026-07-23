@@ -117,7 +117,7 @@ const layoutArchetypes = [
   { company: [8, 13, 88], name: [57, 26, 148], role: [57, 45, 86], contact: [[57, 65], [57, 75], [57, 85]], align: "left", motif: 8 },
   { company: [8, 78, 84], name: [8, 25, 148], role: [8, 44, 88], contact: [[50, 25], [50, 36], [50, 47]], align: "left", motif: 9 },
 ];
-const templates = Array.from({ length: 100 }, (_, index) => {
+const imageTemplates = Array.from({ length: 100 }, (_, index) => {
   const base = layoutArchetypes[index % layoutArchetypes.length];
   const atlas = Math.floor(index / 20) + 1;
   const cell = index % 20;
@@ -126,7 +126,7 @@ const templates = Array.from({ length: 100 }, (_, index) => {
   const adjust = ([x, y, size]) => [x, y, size];
   return {
     id: index + 1,
-    name: `AI 디자인 ${String(index + 1).padStart(3, "0")}`,
+    name: `프리미엄 ${String(index + 1).padStart(3, "0")}`,
     motif: 0,
     art: atlas,
     artUrl: `/card-atlas-${atlas}.png`,
@@ -148,6 +148,41 @@ const templates = Array.from({ length: 100 }, (_, index) => {
     },
   };
 });
+const simplePalettes = [
+  ["#ffffff", "#17233b"], ["#f8f6f1", "#262626"], ["#f4f5f7", "#31516f"],
+  ["#fffaf2", "#a67b52"], ["#f3f5f0", "#61705b"], ["#17191d", "#d7b46a"],
+  ["#10243d", "#dbe7f5"], ["#f7f1ec", "#a96253"], ["#fbfbfa", "#777b82"], ["#182b26", "#b7c9b9"],
+];
+const simpleTemplates = Array.from({ length: 50 }, (_, index) => {
+  const base = layoutArchetypes[index % layoutArchetypes.length];
+  const [backgroundColor, accent] = simplePalettes[index % simplePalettes.length];
+  const family = index % 5;
+  const position = 5 + ((index * 13) % 82);
+  const thickness = 1 + (index % 3);
+  const backgrounds = [
+    `linear-gradient(90deg, ${accent} 0 ${thickness}%, transparent ${thickness}%)`,
+    `linear-gradient(180deg, transparent 0 ${position}%, ${accent} ${position}% ${position + thickness}%, transparent ${position + thickness}%)`,
+    `linear-gradient(135deg, ${accent} 0 9%, transparent 9% 91%, ${accent} 91%)`,
+    `linear-gradient(90deg, transparent 0 72%, ${accent} 72% 74%, transparent 74%), linear-gradient(180deg, ${accent} 0 2%, transparent 2%)`,
+    `linear-gradient(180deg, transparent 0 88%, ${accent} 88% 100%), linear-gradient(90deg, ${accent} 0 18%, transparent 18%)`,
+  ];
+  return {
+    id: `simple-${index + 1}`,
+    name: `심플 ${String(index + 1).padStart(2, "0")}`,
+    motif: 0,
+    simple: index + 1,
+    simpleBackground: `${backgrounds[family]}, ${backgroundColor}`,
+    textColor: [5, 6, 9].includes(index % 10) ? "#f8f7f2" : "#171724",
+    layout: {
+      company: base.company,
+      name: base.name,
+      role: base.role,
+      contacts: base.contact,
+      align: base.align,
+    },
+  };
+});
+const templates = [...simpleTemplates, ...imageTemplates];
 const defaults = {
   minimal: ["#fff", "#171724", "#635bff"],
   bold: ["#141419", "#fff", "#ff5c35"],
@@ -197,14 +232,6 @@ const initialItems = [
   },
 ].map((item) => ({ ...item, side: "front" }));
 const initialCardItems = [...initialItems, ...initialBackItems];
-const resumeCategories = [
-  "신입",
-  "경력직",
-  "개발자",
-  "디자이너",
-  "마케팅·기획",
-  "영문",
-];
 const resumeTemplates = Array.from({ length: 50 }, (_, index) => {
   const atlas = Math.floor(index / 10) + 1;
   const cell = index % 10;
@@ -215,7 +242,7 @@ const resumeTemplates = Array.from({ length: 50 }, (_, index) => {
     atlas,
     artUrl: `/resume-atlas-${atlas}.png`,
     artPosition: `${(cell % 5) * 25}% ${Math.floor(cell / 5) * 100}%`,
-    category: resumeCategories[index % resumeCategories.length],
+    english: index % 6 === 5,
   };
 });
 
@@ -293,10 +320,10 @@ function Home() {
                 명함 만들기 →
               </a>
               <a className="button button-secondary" href="/resume/">
-                이력서 만들기
+                이력서 만들기 →
               </a>
               <a className="button button-secondary" href="/invitation/">
-                초대장 만들기
+                초대장 만들기 →
               </a>
             </div>
             <ul className="trust-list">
@@ -310,7 +337,7 @@ function Home() {
             <div className="showcase-card showcase-card-front">
               <div className="showcase-logo">C</div>
               <div>
-                <strong>김카들리</strong>
+                <strong>한서윤</strong>
                 <span>Product Designer</span>
               </div>
               <small>hello@cardly.kr</small>
@@ -325,7 +352,7 @@ function Home() {
           <div className="feature-grid">
             <article>
               <span className="feature-number">01</span>
-              <h3>100가지 프리미엄 명함</h3>
+              <h3>150가지 프리미엄 명함</h3>
               <p>
                 재질과 그래픽이 다른 템플릿을 고르고 모든 요소를 직접
                 편집하세요.
@@ -342,7 +369,7 @@ function Home() {
             <article>
               <span className="feature-number">03</span>
               <h3>사진 이력서</h3>
-              <p>사진을 드래그해 넣고 20가지 템플릿을 PDF로 저장하세요.</p>
+              <p>사진을 드래그해 넣고 50가지 템플릿을 PDF로 저장하세요.</p>
             </article>
             <article className="feature-invite">
               <span className="feature-number">04 · NEW</span>
@@ -562,7 +589,7 @@ function Maker() {
     setSelected(null);
     await new Promise((r) => setTimeout(r));
     const canvas = await html2canvas(cardRef.current, {
-      scale: 3,
+      scale: 5,
       useCORS: true,
       backgroundColor: null,
     });
@@ -608,12 +635,14 @@ function Maker() {
                       className="template-swatch"
                       data-variant={t.motif}
                       data-art={t.art ?? undefined}
+                      data-simple={t.simple ?? undefined}
                       style={{
                         "--mini-x": `${t.layout.name[0]}%`,
                         "--mini-y": `${Math.max(8, t.layout.name[1] / 2)}px`,
                         "--mini-w": `${Math.max(24, Math.min(54, t.layout.name[2] / 3))}%`,
                         "--art-position": t.artPosition || "0% 0%",
-                        "--art-image": `url(${t.artUrl})`,
+                        "--art-image": t.artUrl ? `url(${t.artUrl})` : undefined,
+                        "--simple-bg": t.simpleBackground,
                       }}
                     >
                       <i />
@@ -742,6 +771,7 @@ function Maker() {
                 data-corners={corners}
                 data-variant={template.motif}
                 data-art={template.art ?? undefined}
+                data-simple={template.simple ?? undefined}
                 style={{
                   "--card-accent": colors.accent,
                   "--card-bg": colors.bg,
@@ -751,7 +781,8 @@ function Maker() {
                   "--motif-y": `${template.motifY}%`,
                   "--motif-size": `${template.motifSize}%`,
                   "--art-position": template.artPosition || "0% 0%",
-                  "--art-image": `url(${template.artUrl})`,
+                  "--art-image": template.artUrl ? `url(${template.artUrl})` : undefined,
+                  "--simple-bg": template.simpleBackground,
                   fontFamily: font,
                 }}
                 onDragOver={(e) => e.preventDefault()}
@@ -1018,9 +1049,8 @@ function Resume() {
       ),
     ),
   );
-  const [category, setCategory] = useState("전체");
   const [data, setData] = useState({
-    name: "김카들리",
+    name: "한서윤",
     title: "Product Designer",
     email: "hello@cardly.kr",
     phone: "010-1234-5678",
@@ -1081,7 +1111,7 @@ function Resume() {
       import("jspdf"),
     ]);
     const canvas = await html2canvas(sheetRef.current, {
-      scale: 2,
+      scale: 3,
       useCORS: true,
     });
     const pdf = new jsPDF("p", "mm", "a4");
@@ -1103,17 +1133,14 @@ function Resume() {
           ? 8
           : 0),
   );
-  const visibleTemplates =
-    category === "전체"
-      ? resumeTemplates
-      : resumeTemplates.filter((t) => t.category === category);
+  const visibleTemplates = resumeTemplates;
   return (
     <Shell>
       <main className="resume-page section-shell">
         <div className="section-heading">
           <span className="eyebrow">RESUME BUILDER</span>
           <h1>이력서 만들기</h1>
-          <p>50가지 AI 디자인 템플릿과 사진으로 이력서를 완성하세요.</p>
+          <p>50가지 깔끔한 템플릿과 사진으로 이력서를 완성하세요.</p>
         </div>
         <div className="resume-studio">
           <aside className="resume-editor">
@@ -1121,18 +1148,6 @@ function Resume() {
               <legend>
                 템플릿 선택 <small>{resumeTemplates.length}</small>
               </legend>
-              <div className="resume-category-tabs">
-                {["전체", ...resumeCategories].map((item) => (
-                  <button
-                    type="button"
-                    className={category === item ? "active" : ""}
-                    key={item}
-                    onClick={() => setCategory(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
               <div className="resume-template-list resume-template-20">
                 {visibleTemplates.map((t) => (
                   <label key={t.id}>
@@ -1274,7 +1289,7 @@ function Resume() {
               data={data}
               photo={photo}
               font={font}
-              english={tpl.category === "영문"}
+              english={tpl.english}
               layout={resumeLayout}
               selectedBlock={selectedBlock}
               onBlockPointerDown={dragResumeBlock}
@@ -1345,7 +1360,7 @@ const invitePresets = {
     label: "청첩장",
     eyebrow: "WE ARE GETTING MARRIED",
     title: "우리, 결혼합니다",
-    names: "김카들리  ·  이초대",
+    names: "한서윤  ·  이도현",
     message: "서로의 하루를 아끼며 살아가겠습니다.\n소중한 날, 함께 축복해 주세요.",
     accent: "#9b6f55",
     theme: "wedding",
@@ -1354,7 +1369,7 @@ const invitePresets = {
     label: "생일",
     eyebrow: "HAPPY BIRTHDAY",
     title: "생일 파티에 초대해요!",
-    names: "카들리의 생일",
+    names: "서윤의 생일",
     message: "맛있는 음식과 즐거운 이야기를 준비했어요.\n가벼운 마음으로 함께해 주세요.",
     accent: "#ff6b73",
     theme: "birthday",
@@ -1401,9 +1416,9 @@ function Invite() {
     ...invitePresets.wedding,
     date: "2026-10-24",
     time: "오후 2:00",
-    place: "카들리 가든",
+    place: "라운드 가든",
     address: "서울특별시 중구 세종대로 110",
-    host: "김카들리",
+    host: "한서윤",
   });
   const changeKind = (nextKind) => {
     const preset = invitePresets[nextKind];
@@ -1420,7 +1435,7 @@ function Invite() {
   const saveInvite = async () => {
     const { default: html2canvas } = await import("html2canvas");
     const canvas = await html2canvas(inviteRef.current, {
-      scale: 3,
+      scale: 4,
       useCORS: true,
       backgroundColor: null,
     });
@@ -1529,7 +1544,7 @@ function About() {
         <div className="guide-grid">
           <article className="guide-card">
             <h3>명함 편집기</h3>
-            <p>100가지 프리미엄 템플릿, 고급 재질, 글꼴과 캔버스 편집을 제공합니다.</p>
+            <p>150가지 프리미엄 템플릿, 고급 재질, 글꼴과 캔버스 편집을 제공합니다.</p>
           </article>
           <article className="guide-card">
             <h3>이력서 편집기</h3>

@@ -1795,6 +1795,20 @@ a {
   background-size: 500% 200%;
   background-position: var(--resume-art-position);
 }
+.resume-sheet[data-resume-art="true"] .resume-head,
+.resume-sheet[data-resume-art="true"] .resume-body {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+}
+.resume-sheet[data-resume-art="true"] .resume-head {
+  padding: 18px 20px 28px;
+  margin: -18px -20px 0;
+}
+.resume-sheet[data-resume-art="true"] .resume-body {
+  padding: 18px 20px 20px;
+  margin: 0 -20px -20px;
+}
 .resume-ai-thumb {
   display: block;
   position: relative;
@@ -1881,6 +1895,12 @@ a {
   background-repeat: no-repeat;
   background-size: 400% 500%;
   background-position: var(--art-position);
+}
+.business-card[data-simple] {
+  background: var(--simple-bg);
+}
+.template-swatch[data-simple] {
+  background: var(--simple-bg);
 }
 
 /* Curated typographic systems inspired by editorial and identity design. */
