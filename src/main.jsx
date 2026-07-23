@@ -1394,16 +1394,22 @@ const invitePresets = {
   },
 };
 
-const inviteTemplates = Array.from({ length: 50 }, (_, index) => {
-  const atlas = Math.floor(index / 10) + 1;
-  const cell = index % 10;
-  const kind = atlas === 1 ? "wedding" : atlas === 2 ? "birthday" : atlas === 3 ? "gathering" : "event";
+const inviteTemplates = Array.from({ length: 30 }, (_, index) => {
+  const config = index < 8
+    ? { atlas: 1, cell: index, kind: "wedding" }
+    : index < 15
+      ? { atlas: 2, cell: index - 8, kind: "birthday" }
+      : index < 22
+        ? { atlas: 3, cell: index - 15, kind: "gathering" }
+        : { atlas: index < 26 ? 4 : 5, cell: index < 26 ? index - 22 : index - 26, kind: "event" };
+  const { atlas, cell, kind } = config;
   return {
     id: index + 1,
     kind,
     artUrl: `/invite-atlas-${atlas}.png`,
     artPosition: `${(cell % 5) * 25}% ${Math.floor(cell / 5) * 100}%`,
     dark: atlas === 4 && [0, 1, 3, 4, 7].includes(cell),
+    layout: index % 10,
   };
 });
 
@@ -1463,7 +1469,7 @@ function Invite() {
               ))}
             </div>
             <fieldset className="invite-template-picker">
-              <legend>AI 템플릿 <small>{inviteTemplates.filter((template) => template.kind === kind).length}</small></legend>
+              <legend>디자인 선택 <small>{inviteTemplates.filter((template) => template.kind === kind).length}</small></legend>
               <div className="invite-template-grid">
                 {inviteTemplates.filter((template) => template.kind === kind).map((template) => (
                   <button
@@ -1493,12 +1499,13 @@ function Invite() {
               <b>{photo ? "대표 사진 변경" : "대표 사진 추가"}</b>
               <span>클릭해서 사진을 선택하세요</span>
             </label>
+            {photo && <button type="button" className="invite-photo-remove" onClick={() => setPhoto("")}>사진 삭제</button>}
           </aside>
           <section className="invite-preview-panel">
             <div className="preview-toolbar"><b>모바일 미리보기</b><span>9:16</span></div>
             <article
               ref={inviteRef}
-              className={`mobile-invite invite-${details.theme} ${inviteTemplate.dark ? "invite-dark-art" : ""}`}
+              className={`mobile-invite invite-${details.theme} invite-layout-${inviteTemplate.layout} ${inviteTemplate.dark ? "invite-dark-art" : ""}`}
               data-invite-art="true"
               style={{
                 "--invite-accent": details.accent,

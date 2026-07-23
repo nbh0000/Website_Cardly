@@ -2381,6 +2381,17 @@ a {
 }
 .invite-template-grid button.active { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(99,91,255,.16); }
 .invite-template-grid button span { position: absolute; right: 3px; bottom: 3px; padding: 1px 3px; border-radius: 4px; color: #fff; background: rgba(0,0,0,.58); font-size: 8px; }
+.invite-photo-remove {
+  width: 100%;
+  margin-top: -7px;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: #a13f45;
+  background: var(--surface);
+  font-weight: 800;
+  cursor: pointer;
+}
 .invite-orbit {
   position: absolute;
   z-index: -1;
@@ -2468,6 +2479,35 @@ a {
   color: #7d7772;
   font-weight: 500;
 }
+.invite-layout-1 { text-align: center; }
+.invite-layout-1 .invite-rule { margin-inline: auto; }
+.invite-layout-1 .invite-info { text-align: left; }
+.invite-layout-2 .invite-main-copy { width: 76%; margin-left: auto; text-align: right; }
+.invite-layout-2 .invite-rule { margin-left: auto; }
+.invite-layout-2 .invite-info { left: 82px; }
+.invite-layout-3 .invite-eyebrow { display: block; text-align: center; }
+.invite-layout-3 .invite-main-copy { margin-top: 70px; text-align: center; }
+.invite-layout-3 .invite-rule { margin-inline: auto; }
+.invite-layout-3 .invite-info { grid-template-columns: repeat(3, 1fr); gap: 5px; text-align: center; }
+.invite-layout-3 .invite-info > div { display: block; }
+.invite-layout-4 .invite-main-copy { width: 72%; margin-top: 120px; }
+.invite-layout-4 .invite-info { right: 22px; left: 108px; }
+.invite-layout-5 .invite-main-copy { margin-top: 210px; }
+.invite-layout-5 .invite-main-copy h2 { font-size: 1.65rem; }
+.invite-layout-5 .invite-info { bottom: 22px; }
+.invite-layout-6 .invite-main-copy { width: 78%; margin: 55px auto 0; text-align: center; }
+.invite-layout-6 .invite-rule { margin-inline: auto; }
+.invite-layout-6 .invite-info { left: 52px; right: 52px; }
+.invite-layout-7 .invite-main-copy { width: 68%; margin-top: 45px; }
+.invite-layout-7 .invite-photo { position: absolute; top: 72px; right: 28px; width: 112px; height: 160px; margin: 0; border-radius: 12px; }
+.invite-layout-8 .invite-main-copy { margin-top: 26px; }
+.invite-layout-8 .invite-photo { height: 180px; border-radius: 12px; }
+.invite-layout-8 .invite-info { grid-template-columns: 1fr 1fr; }
+.invite-layout-8 .invite-info > div { display: block; }
+.invite-layout-9 .invite-eyebrow { display: block; text-align: right; }
+.invite-layout-9 .invite-main-copy { width: 72%; margin-top: 72px; }
+.invite-layout-9 .invite-photo { position: absolute; top: 36px; left: 34px; width: 92px; height: 92px; margin: 0; border-radius: 50%; }
+.invite-layout-9 .invite-info { left: 34px; right: 90px; }
 .invite-birthday { background: linear-gradient(155deg, #fff8f2, #fff 60%); }
 .invite-birthday .invite-orbit { border-radius: 36% 64% 58% 42%; transform: rotate(25deg); }
 .invite-gathering { color: #183b33; background: #f3f8f3; }
