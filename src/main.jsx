@@ -129,7 +129,7 @@ const imageTemplates = Array.from({ length: 100 }, (_, index) => {
     name: `프리미엄 ${String(index + 1).padStart(3, "0")}`,
     motif: 0,
     art: atlas,
-    artUrl: `/card-atlas-${atlas}.png`,
+    artUrl: `/card-atlas-clean-${atlas}.png`,
     artPosition: `${column * 33.333}% ${row * 25}%`,
     textColor: atlas === 4 || (atlas === 1 && [1, 2, 5, 10, 12, 15, 19].includes(cell)) ? "#f8f5ed" : "#171724",
     angle: (index * 17) % 180,
@@ -750,6 +750,8 @@ function Maker() {
               selected={items.find((x) => x.id === selected)}
               onSize={(size) => patchItem(selected, { size })}
               onText={(text) => patchItem(selected, { text })}
+              onColor={(color) => patchItem(selected, { color })}
+              defaultColor={colors.text}
               onAdd={add}
               onDuplicate={duplicateSelected}
               onCenter={centerSelected}
@@ -916,6 +918,8 @@ function EditorToolbar({
   selected,
   onSize,
   onText,
+  onColor,
+  defaultColor,
   onAdd,
   onDelete,
   onDuplicate,
@@ -936,6 +940,17 @@ function EditorToolbar({
             onFocus={(event) => event.currentTarget.select()}
             onChange={(event) => onText(event.target.value)}
             aria-label="선택한 명함 텍스트 편집"
+          />
+        </label>
+      )}
+      {selected && !["divider", "circle", "square", "image"].includes(selected.type) && (
+        <label className="canvas-item-color">
+          <span>개별 색상</span>
+          <input
+            type="color"
+            value={selected.color || defaultColor}
+            onChange={(event) => onColor(event.target.value)}
+            aria-label="선택한 명함 텍스트 색상"
           />
         </label>
       )}
@@ -998,6 +1013,7 @@ function CardItem({ item, selected, onPointerDown, onSelect, onText }) {
         top: `${item.y}%`,
         transform: `scale(${item.size / 100})`,
         textAlign: item.align || "left",
+        color: item.color || undefined,
       }}
       onPointerDown={onPointerDown}
       onClick={onSelect}

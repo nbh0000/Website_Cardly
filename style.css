@@ -948,6 +948,24 @@ a {
   border-color: var(--purple);
   outline: 3px solid rgba(99, 91, 255, 0.13);
 }
+.canvas-item-color {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.canvas-item-color input {
+  width: 38px;
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
 .business-card[data-material="wood"]:after {
   background:
     repeating-radial-gradient(ellipse at -10% 50%, transparent 0 18px, rgba(93,54,28,.22) 20px 22px, transparent 24px 35px),
