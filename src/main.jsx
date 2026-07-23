@@ -327,7 +327,7 @@ function Home() {
               </a>
             </div>
             <ul className="trust-list">
-              <li>설치 없이 바로 제작</li>
+              <li>회원가입·결제 없이 완전 무료</li>
               <li>모바일에서도 편집</li>
               <li>고화질 PNG·PDF 저장</li>
             </ul>
@@ -828,6 +828,20 @@ function Maker() {
             />
           </section>
         </div>
+        <section className="seo-guide" aria-labelledby="business-card-guide-title">
+          <span className="eyebrow">FREE BUSINESS CARD MAKER</span>
+          <h2 id="business-card-guide-title">무료 명함 템플릿으로 바로 만드는 나만의 명함</h2>
+          <p>
+            Cardly 명함 만들기는 회원가입, 결제, 다운로드 비용 없이 완전 무료입니다.
+            150가지 명함 디자인에서 원하는 양식을 고른 뒤 이름, 직함, 전화번호,
+            이메일, 색상과 이미지를 직접 수정하고 고화질 PNG로 저장할 수 있습니다.
+          </p>
+          <div className="seo-guide-grid">
+            <article><b>1</b><h3>명함 템플릿 선택</h3><p>심플한 명함부터 프리미엄 디자인까지 용도에 맞는 양식을 선택하세요.</p></article>
+            <article><b>2</b><h3>글자와 이미지 편집</h3><p>각 요소의 위치, 크기와 색상을 바꾸고 로고나 사진을 추가하세요.</p></article>
+            <article><b>3</b><h3>무료 PNG 저장</h3><p>완성한 앞면과 뒷면을 결제 없이 고화질 이미지로 내려받으세요.</p></article>
+          </div>
+        </section>
       </main>
     </Shell>
   );
@@ -1313,6 +1327,20 @@ function Resume() {
             />
           </section>
         </div>
+        <section className="seo-guide" aria-labelledby="resume-guide-title">
+          <span className="eyebrow">FREE RESUME BUILDER</span>
+          <h2 id="resume-guide-title">무료 이력서 양식과 이력서 템플릿 50개</h2>
+          <p>
+            회원가입이나 결제 없이 이력서를 작성하고 A4 PDF로 저장할 수 있습니다.
+            깔끔한 이력서 양식을 선택해 증명사진, 자기소개, 경력, 학력과 보유 기술을
+            입력하고 각 항목의 위치와 크기를 직접 조정하세요.
+          </p>
+          <div className="seo-guide-grid">
+            <article><b>1</b><h3>이력서 양식 선택</h3><p>내용과 겹치지 않는 인쇄용 A4 이력서 템플릿을 비교하세요.</p></article>
+            <article><b>2</b><h3>경력과 사진 입력</h3><p>연락처, 자기소개, 경력과 학력을 입력하고 사진을 추가하세요.</p></article>
+            <article><b>3</b><h3>완전 무료 PDF</h3><p>숨겨진 결제나 다운로드 비용 없이 완성한 이력서를 저장하세요.</p></article>
+          </div>
+        </section>
       </main>
     </Shell>
   );

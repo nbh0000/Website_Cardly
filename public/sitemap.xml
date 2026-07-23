@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://cardly.kr/</loc></url><url><loc>https://cardly.kr/business-card/</loc></url><url><loc>https://cardly.kr/resume/</loc></url><url><loc>https://cardly.kr/invitation/</loc></url><url><loc>https://cardly.kr/about/</loc></url><url><loc>https://cardly.kr/contact/</loc></url><url><loc>https://cardly.kr/privacy/</loc></url><url><loc>https://cardly.kr/terms/</loc></url></urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://cardly.kr/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://cardly.kr/business-card/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://cardly.kr/resume/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://cardly.kr/invitation/</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url><loc>https://cardly.kr/about/</loc></url>
+  <url><loc>https://cardly.kr/contact/</loc></url>
+  <url><loc>https://cardly.kr/privacy/</loc></url>
+  <url><loc>https://cardly.kr/terms/</loc></url>
+</urlset>
