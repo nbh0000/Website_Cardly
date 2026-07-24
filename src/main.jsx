@@ -353,12 +353,6 @@ function Home() {
               <li>PNG·PDF 고화질 저장</li>
             </ul>
           </div>
-          <div className="hero-visual">
-            <img src="/cardly-studio-hero-v2.png" alt="명함, 이력서, 초대장이 놓인 Cardly 디자인 스튜디오" />
-            <div className="hero-stat hero-stat-card"><b>150</b><span>명함 디자인</span></div>
-            <div className="hero-stat hero-stat-resume"><b>50</b><span>이력서 양식</span></div>
-            <div className="hero-stat hero-stat-invite"><b>30</b><span>초대장 템플릿</span></div>
-          </div>
         </section>
         <section className="tool-showcase section-shell" id="cardly-tools">
           <div className="section-heading centered-heading">
@@ -381,41 +375,6 @@ function Home() {
             </a>
           </div>
         </section>
-        <section className="home-proof section-shell" aria-labelledby="home-proof-title">
-          <div className="home-proof-copy">
-            <span className="eyebrow">ONE SIMPLE FLOW</span>
-            <h2 id="home-proof-title">고르고, 바꾸고,<br />바로 저장하세요</h2>
-            <p>디자인 프로그램을 배울 필요가 없습니다. 템플릿을 선택한 뒤 내 정보와 사진을 넣으면 완성됩니다.</p>
-            <ol>
-              <li><b>01</b><span><strong>템플릿 선택</strong>용도에 맞는 디자인을 한눈에 비교합니다.</span></li>
-              <li><b>02</b><span><strong>내용 편집</strong>글자, 색상, 사진과 배치를 직접 조정합니다.</span></li>
-              <li><b>03</b><span><strong>고화질 저장</strong>명함은 PNG, 이력서는 A4 PDF로 내려받습니다.</span></li>
-            </ol>
-          </div>
-          <div className="home-proof-visual" aria-label="Cardly 디자인 편집 과정 예시">
-            <div className="proof-window">
-              <div className="proof-window-bar"><i /><i /><i /><span>cardly.kr</span></div>
-              <div className="proof-window-body">
-                <div className="proof-sidebar"><b>템플릿</b>{[1,2,3,4].map((item) => <i key={item} />)}</div>
-                <div className="proof-canvas">
-                  <article><small>PRODUCT DESIGNER</small><strong>한서윤</strong><span>hello@example.com</span></article>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="home-search-guide section-shell" aria-labelledby="home-search-title">
-          <div>
-            <span className="eyebrow">FREE DESIGN LIBRARY</span>
-            <h2 id="home-search-title">필요한 양식을 무료로 시작하세요</h2>
-            <p>취업 준비부터 새로운 만남과 소중한 행사까지, Cardly가 필요한 한 장을 빠르게 완성하도록 돕습니다.</p>
-          </div>
-          <div className="home-search-links">
-            <a href="/resume/"><b>무료 이력서 양식</b><span>깔끔한 A4 이력서 템플릿 50개와 PDF 저장</span><i>바로 만들기 →</i></a>
-            <a href="/business-card/"><b>무료 명함 템플릿</b><span>직접 편집하는 명함 디자인 150개와 PNG 저장</span><i>바로 만들기 →</i></a>
-            <a href="/invitation/"><b>무료 모바일 초대장</b><span>청첩장·생일·모임·행사 초대장 30개</span><i>바로 만들기 →</i></a>
-          </div>
-        </section>
         <section className="home-guide-library section-shell" aria-labelledby="home-guide-title">
           <div className="section-heading">
             <span className="eyebrow">RESUME KNOWLEDGE</span>
@@ -427,12 +386,6 @@ function Home() {
               <a href={url} key={url}><span>{String(index + 1).padStart(2, "0")}</span><h3>{guide.title}</h3><p>{guide.intro}</p><b>가이드 읽기 →</b></a>
             ))}
           </div>
-        </section>
-        <section className="free-promise section-shell">
-          <span className="eyebrow">FREE, FOR REAL</span>
-          <h2>가격표가 없는 디자인 도구</h2>
-          <p>무료 체험이 아닙니다. Cardly는 템플릿 선택부터 편집, 고화질 저장까지 그 어떤 결제도 받지 않습니다.</p>
-          <a className="button button-primary" href="/resume/">무료 이력서 만들기</a>
         </section>
       </main>
     </Shell>

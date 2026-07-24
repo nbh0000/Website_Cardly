@@ -575,6 +575,44 @@ a {
   .guide-cta { padding: 32px 24px; margin-top: 46px; }
 }
 
+/* Focused homepage: headline, tools, helpful guides. */
+.hero.section-shell {
+  gap: 0;
+  padding-top: 76px;
+  padding-bottom: 34px;
+}
+.hero.section-shell h1 {
+  font-size: clamp(3.3rem, 6.6vw, 6.2rem);
+}
+.tool-showcase {
+  padding-top: 38px;
+  padding-bottom: 104px;
+}
+.tool-showcase .centered-heading {
+  margin-bottom: 30px;
+}
+.tool-showcase .centered-heading h2 {
+  font-size: clamp(1.9rem, 3.3vw, 2.8rem);
+}
+.tool-card-art { height: 190px; }
+.tool-card-copy { padding: 23px 24px 25px; }
+.tool-card-copy h3 { margin-top: 10px; }
+.tool-card-copy p { min-height: 44px; }
+.home-guide-library {
+  padding-top: 82px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 980px) {
+  .tool-card { display: block; }
+  .tool-card-art { height: 190px; min-height: 0; }
+}
+@media (max-width: 620px) {
+  .hero.section-shell { padding-top: 52px; padding-bottom: 20px; }
+  .tool-showcase { padding-top: 28px; padding-bottom: 74px; }
+  .tool-card-art { height: 170px; }
+  .home-guide-library { padding-top: 64px; }
+}
+
 /* 2026 Cardly home studio */
 .free-badge {
   display: inline-flex;
