@@ -167,6 +167,131 @@ a {
   .tool-card-art { height: 230px; min-height: 0; }
 }
 
+/* Sharp, print-first resume system: ten structures × five restrained tones. */
+.resume-clean {
+  --resume-accent: #182433;
+  --resume-soft: #edf1f5;
+  --resume-paper: #fff;
+  color: #18212d;
+  background: var(--resume-paper);
+}
+.resume-clean .resume-head {
+  border-color: var(--resume-accent);
+}
+.resume-clean .resume-body h3 {
+  color: var(--resume-accent);
+}
+.resume-clean .resume-skills span {
+  border: 1px solid color-mix(in srgb, var(--resume-accent) 20%, #dfe3e8);
+  color: var(--resume-accent);
+  background: var(--resume-soft);
+}
+.resume-clean-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #d9dde4;
+}
+.resume-clean-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 12% 12% auto;
+  height: 8%;
+  border-bottom: 2px solid var(--resume-accent);
+  background: linear-gradient(90deg, var(--resume-accent) 0 42%, transparent 42%);
+}
+.resume-clean-thumb i,
+.resume-clean-thumb em,
+.resume-clean-thumb small {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  display: block;
+  height: 2px;
+  background: #cbd1d8;
+  box-shadow: 0 6px 0 #dfe3e7, 0 12px 0 #dfe3e7, 0 18px 0 #dfe3e7;
+}
+.resume-clean-thumb i { top: 34%; }
+.resume-clean-thumb em { top: 57%; }
+.resume-clean-thumb small { top: 78%; }
+.resume-clean-thumb b {
+  position: absolute;
+  z-index: 2;
+  right: 5px;
+  bottom: 4px;
+  color: #7c8490;
+  font-size: 8px;
+}
+.resume-template-list input:checked + .resume-clean-thumb {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 17%, transparent);
+}
+.resume-clean-thumb[data-family="2"] { border-top: 9px solid var(--resume-accent); }
+.resume-clean-thumb[data-family="3"]::after,
+.resume-clean-thumb[data-family="8"]::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 25%;
+  background: var(--resume-soft);
+}
+.resume-clean-thumb[data-family="4"]::before { left: 25%; right: 25%; text-align: center; }
+.resume-clean-thumb[data-family="5"] { border-left: 7px solid var(--resume-accent); }
+.resume-clean-thumb[data-family="6"]::before { background: var(--resume-soft); }
+.resume-clean-thumb[data-family="7"] { border-radius: 0; }
+.resume-clean-thumb[data-family="9"]::before { border: 0; border-left: 22px solid var(--resume-accent); }
+.resume-clean-thumb[data-family="10"] { box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 6px var(--resume-accent); }
+
+.resume-clean[data-resume-family="2"] { border-top: 12px solid var(--resume-accent); }
+.resume-clean[data-resume-family="3"] { border-left: 18px solid var(--resume-accent); }
+.resume-clean[data-resume-family="3"] .resume-head { border-bottom-width: 1px; }
+.resume-clean[data-resume-family="4"] .resume-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+.resume-clean[data-resume-family="4"] .resume-contact {
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
+.resume-clean[data-resume-family="5"] .resume-head {
+  padding: 25px;
+  border: 0;
+  background: var(--resume-soft);
+}
+.resume-clean[data-resume-family="6"] .resume-body {
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+.resume-clean[data-resume-family="6"] .resume-body > :nth-child(2) { grid-row: span 2; }
+.resume-clean[data-resume-family="7"] .resume-body h3 {
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--resume-accent);
+}
+.resume-clean[data-resume-family="8"] {
+  box-shadow: inset 145px 0 0 var(--resume-soft), 0 22px 55px rgba(30,34,50,.18);
+}
+.resume-clean[data-resume-family="8"] .resume-head,
+.resume-clean[data-resume-family="8"] .resume-body { position: relative; }
+.resume-clean[data-resume-family="9"] .resume-head h2 {
+  padding-left: 16px;
+  border-left: 6px solid var(--resume-accent);
+}
+.resume-clean[data-resume-family="9"] .resume-body { gap: 22px; }
+.resume-clean[data-resume-family="10"] {
+  outline: 1px solid var(--resume-accent);
+  outline-offset: -24px;
+}
+.resume-clean[data-resume-family="10"] .resume-head,
+.resume-clean[data-resume-family="10"] .resume-body { margin-inline: 14px; }
+
 /* 2026 Cardly home studio */
 .free-badge {
   display: inline-flex;
@@ -254,9 +379,14 @@ a {
   background-size: 500% 400%;
 }
 .tool-card-resume .tool-card-art {
-  background-image: url("/resume-atlas-1.png");
-  background-position: 0 0;
-  background-size: 500% 200%;
+  position: relative;
+  background:
+    linear-gradient(#253b5a, #253b5a) 44% 24% / 26% 4% no-repeat,
+    linear-gradient(#d2d9e1, #d2d9e1) 44% 34% / 46% 2px no-repeat,
+    repeating-linear-gradient(180deg, #b8c1cc 0 2px, transparent 2px 13px) 44% 55% / 46% 37% no-repeat,
+    linear-gradient(90deg, #edf2f7 0 28%, #fff 28%) center / 58% 82% no-repeat,
+    #e7ebf1;
+  box-shadow: inset 0 0 0 1px rgba(31,45,65,.05);
 }
 .tool-card-invite .tool-card-art {
   background-image: url("/invite-atlas-1.png");
@@ -2097,14 +2227,14 @@ a {
   background-color: var(--card-bg);
   background-image: var(--art-image);
   background-repeat: no-repeat;
-  background-size: 400% 500%;
+  background-size: 402% 502%;
   background-position: var(--art-position);
 }
 .template-swatch[data-art] {
   background-color: #f7f4ee;
   background-image: var(--art-image);
   background-repeat: no-repeat;
-  background-size: 400% 500%;
+  background-size: 402% 502%;
   background-position: var(--art-position);
 }
 .business-card[data-simple] {

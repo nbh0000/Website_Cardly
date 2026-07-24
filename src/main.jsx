@@ -232,16 +232,25 @@ const initialItems = [
   },
 ].map((item) => ({ ...item, side: "front" }));
 const initialCardItems = [...initialItems, ...initialBackItems];
+const resumeTones = [
+  ["#182433", "#edf1f5", "#ffffff"],
+  ["#254a73", "#edf4fa", "#ffffff"],
+  ["#315f52", "#edf5f1", "#ffffff"],
+  ["#70464c", "#f7efef", "#ffffff"],
+  ["#5c536e", "#f2eff7", "#ffffff"],
+];
 const resumeTemplates = Array.from({ length: 50 }, (_, index) => {
-  const atlas = Math.floor(index / 10) + 1;
-  const cell = index % 10;
+  const family = Math.floor(index / 5) + 1;
+  const tone = index % resumeTones.length;
+  const [accent, soft, paper] = resumeTones[tone];
   return {
     id: index + 1,
-    base: "ai",
-    variant: `ai-${index + 1}`,
-    atlas,
-    artUrl: `/resume-atlas-${atlas}.png`,
-    artPosition: `${(cell % 5) * 25}% ${Math.floor(cell / 5) * 100}%`,
+    base: "clean",
+    family,
+    tone,
+    accent,
+    soft,
+    paper,
     english: index % 6 === 5,
   };
 });
@@ -1170,9 +1179,13 @@ function Resume() {
                       checked={tpl.id === t.id}
                       onChange={() => setTpl(t)}
                     />
-                    <span className="resume-ai-thumb" style={{ "--resume-art": `url(${t.artUrl})`, "--resume-art-position": t.artPosition }}>
+                    <span
+                      className="resume-clean-thumb"
+                      data-family={t.family}
+                      style={{ "--resume-accent": t.accent, "--resume-soft": t.soft }}
+                    >
                       <b>{String(t.id).padStart(2, "0")}</b>
-                      <i />
+                      <i /><em /><small />
                     </span>
                   </label>
                 ))}
@@ -1333,9 +1346,10 @@ const ResumeSheet = React.forwardRef(
   ({ tpl, data, photo, font, english, layout, selectedBlock, onBlockPointerDown, onBlockSelect }, ref) => (
     <article
       ref={ref}
-      className={`resume-sheet resume-${tpl.base} resume-variant-${tpl.variant}`}
-      style={{ fontFamily: font, "--resume-art": `url(${tpl.artUrl})`, "--resume-art-position": tpl.artPosition }}
-      data-resume-art="true"
+      className={`resume-sheet resume-${tpl.base}`}
+      style={{ fontFamily: font, "--resume-accent": tpl.accent, "--resume-soft": tpl.soft, "--resume-paper": tpl.paper }}
+      data-resume-family={tpl.family}
+      data-resume-tone={tpl.tone}
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onBlockSelect(null);
       }}
