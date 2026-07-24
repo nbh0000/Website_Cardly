@@ -270,8 +270,8 @@ function Header() {
         <span>Cardly</span>
       </a>
       <nav className="site-nav">
-        <a href="/business-card/">명함 만들기</a>
         <a href="/resume/">이력서 만들기</a>
+        <a href="/business-card/">명함 만들기</a>
         <a href="/invitation/">초대장 만들기</a>
         <a href="/about/">소개</a>
         <a href="/contact/">문의</a>
@@ -319,14 +319,14 @@ function Home() {
           <div className="hero-copy">
             <span className="free-badge">회원가입 0 · 결제 0 · 다운로드 0원</span>
             <h1>
-              만들고 싶은 순간을
+              필요한 디자인을
               <br />
-              <em>가볍게, 근사하게.</em>
+              <em>무료로, 한 번에.</em>
             </h1>
-            <p>명함부터 이력서, 모바일 초대장까지. 고른 뒤 바로 편집하고 고화질로 저장하세요. Cardly의 모든 기능은 완전 무료입니다.</p>
+            <p>무료 이력서 양식부터 명함 템플릿, 모바일 초대장까지.<br className="desktop-break" /> 고른 뒤 바로 편집하고 고화질로 저장하세요.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="/business-card/">
-                무료로 디자인하기
+              <a className="button button-primary" href="/resume/">
+                무료 이력서 만들기
               </a>
               <a className="button button-secondary" href="#cardly-tools">
                 템플릿 둘러보기
@@ -352,13 +352,13 @@ function Home() {
             <p>복잡한 가입이나 설치 없이, 템플릿을 고르면 바로 편집이 시작됩니다.</p>
           </div>
           <div className="tool-card-grid">
+            <a className="tool-card tool-card-resume" href="/resume/">
+              <div className="tool-card-art" aria-hidden="true" />
+              <div className="tool-card-copy"><span>NO.1 RESUME · 50</span><h3>내용이 먼저 보이는 이력서</h3><p>A4 규격 그대로 편집하고 PDF·Word·HTML로 내려받으세요.</p><b>이력서 만들기 <i>→</i></b></div>
+            </a>
             <a className="tool-card tool-card-business" href="/business-card/">
               <div className="tool-card-art" aria-hidden="true" />
               <div className="tool-card-copy"><span>BUSINESS CARD · 150</span><h3>나를 기억하게 만드는 명함</h3><p>텍스트·색상·배치를 자유롭게 바꾸고 PNG로 저장하세요.</p><b>명함 만들기 <i>→</i></b></div>
-            </a>
-            <a className="tool-card tool-card-resume" href="/resume/">
-              <div className="tool-card-art" aria-hidden="true" />
-              <div className="tool-card-copy"><span>RESUME · 50</span><h3>내용이 먼저 보이는 이력서</h3><p>A4 규격 그대로 편집하고 선명한 PDF로 내려받으세요.</p><b>이력서 만들기 <i>→</i></b></div>
             </a>
             <a className="tool-card tool-card-invite" href="/invitation/">
               <div className="tool-card-art" aria-hidden="true" />
@@ -366,11 +366,46 @@ function Home() {
             </a>
           </div>
         </section>
+        <section className="home-proof section-shell" aria-labelledby="home-proof-title">
+          <div className="home-proof-copy">
+            <span className="eyebrow">ONE SIMPLE FLOW</span>
+            <h2 id="home-proof-title">고르고, 바꾸고,<br />바로 저장하세요</h2>
+            <p>디자인 프로그램을 배울 필요가 없습니다. 템플릿을 선택한 뒤 내 정보와 사진을 넣으면 완성됩니다.</p>
+            <ol>
+              <li><b>01</b><span><strong>템플릿 선택</strong>용도에 맞는 디자인을 한눈에 비교합니다.</span></li>
+              <li><b>02</b><span><strong>내용 편집</strong>글자, 색상, 사진과 배치를 직접 조정합니다.</span></li>
+              <li><b>03</b><span><strong>고화질 저장</strong>명함은 PNG, 이력서는 A4 PDF로 내려받습니다.</span></li>
+            </ol>
+          </div>
+          <div className="home-proof-visual" aria-label="Cardly 디자인 편집 과정 예시">
+            <div className="proof-window">
+              <div className="proof-window-bar"><i /><i /><i /><span>cardly.kr</span></div>
+              <div className="proof-window-body">
+                <div className="proof-sidebar"><b>템플릿</b>{[1,2,3,4].map((item) => <i key={item} />)}</div>
+                <div className="proof-canvas">
+                  <article><small>PRODUCT DESIGNER</small><strong>한서윤</strong><span>hello@example.com</span></article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="home-search-guide section-shell" aria-labelledby="home-search-title">
+          <div>
+            <span className="eyebrow">FREE DESIGN LIBRARY</span>
+            <h2 id="home-search-title">필요한 양식을 무료로 시작하세요</h2>
+            <p>취업 준비부터 새로운 만남과 소중한 행사까지, Cardly가 필요한 한 장을 빠르게 완성하도록 돕습니다.</p>
+          </div>
+          <div className="home-search-links">
+            <a href="/resume/"><b>무료 이력서 양식</b><span>깔끔한 A4 이력서 템플릿 50개와 PDF 저장</span><i>바로 만들기 →</i></a>
+            <a href="/business-card/"><b>무료 명함 템플릿</b><span>직접 편집하는 명함 디자인 150개와 PNG 저장</span><i>바로 만들기 →</i></a>
+            <a href="/invitation/"><b>무료 모바일 초대장</b><span>청첩장·생일·모임·행사 초대장 30개</span><i>바로 만들기 →</i></a>
+          </div>
+        </section>
         <section className="free-promise section-shell">
           <span className="eyebrow">FREE, FOR REAL</span>
           <h2>가격표가 없는 디자인 도구</h2>
           <p>무료 체험이 아닙니다. Cardly는 템플릿 선택부터 편집, 고화질 저장까지 그 어떤 결제도 받지 않습니다.</p>
-          <a className="button button-primary" href="/business-card/">지금 바로 만들기</a>
+          <a className="button button-primary" href="/resume/">무료 이력서 만들기</a>
         </section>
       </main>
     </Shell>
@@ -1128,7 +1163,35 @@ function Resume() {
     target.addEventListener("pointerup", cleanup);
     target.addEventListener("pointercancel", cleanup);
   };
-  const save = async () => {
+  const safeText = (value = "") =>
+    String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  const downloadFile = (content, type, extension) => {
+    const blob = new Blob(["\ufeff", content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `cardly-resume-${data.name || "resume"}.${extension}`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+  const resumeDocument = () => {
+    const paragraphs = (value) =>
+      safeText(value).split("\n").map((line) => `<p>${line || "&nbsp;"}</p>`).join("");
+    const skills = data.skills.split(",").filter((skill) => skill.trim()).map((skill) => `<span>${safeText(skill.trim())}</span>`).join("");
+    return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${safeText(data.name)} 이력서</title><style>
+      @page{size:A4;margin:18mm}*{box-sizing:border-box}body{max-width:174mm;margin:0 auto;color:#18212d;font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.65}
+      header{display:flex;align-items:center;gap:24px;padding-bottom:24px;border-bottom:2px solid ${tpl.accent}}h1{margin:0;font-size:32px}header p{margin:4px 0;color:#5b6573}
+      .photo{width:108px;height:144px;object-fit:cover}.contact{margin-left:auto;text-align:right;font-size:12px}section{margin-top:26px}h2{margin:0 0 9px;color:${tpl.accent};font-size:13px;letter-spacing:.12em}
+      section p{margin:0 0 7px;font-size:13px}.skills{display:flex;flex-wrap:wrap;gap:6px}.skills span{padding:4px 8px;background:${tpl.soft};font-size:12px}
+    </style></head><body><header>${photo ? `<img class="photo" src="${photo}" alt="증명사진">` : ""}<div><h1>${safeText(data.name)}</h1><p>${safeText(data.title)}</p></div><div class="contact">${safeText(data.email)}<br>${safeText(data.phone)}</div></header>
+    <section><h2>소개</h2>${paragraphs(data.summary)}</section><section><h2>경력</h2>${paragraphs(data.experience)}</section>
+    <section><h2>학력</h2>${paragraphs(data.education)}</section><section><h2>기술</h2><div class="skills">${skills}</div></section></body></html>`;
+  };
+  const savePdf = async () => {
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
       import("html2canvas"),
       import("jspdf"),
@@ -1139,7 +1202,16 @@ function Resume() {
     });
     const pdf = new jsPDF("p", "mm", "a4");
     pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, 210, 297);
-    pdf.save("cardly-resume.pdf");
+    pdf.save(`cardly-resume-${data.name || "resume"}.pdf`);
+  };
+  const saveDocument = (format) => {
+    if (format === "pdf") return savePdf();
+    if (format === "html")
+      return downloadFile(resumeDocument(), "text/html;charset=utf-8", "html");
+    if (format === "doc")
+      return downloadFile(resumeDocument().replace("<html lang=\"ko\">", '<html lang="ko" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">'), "application/msword;charset=utf-8", "doc");
+    const plainText = `${data.name}\n${data.title}\n${data.email} · ${data.phone}\n\n[소개]\n${data.summary}\n\n[경력]\n${data.experience}\n\n[학력]\n${data.education}\n\n[기술]\n${data.skills}`;
+    return downloadFile(plainText, "text/plain;charset=utf-8", "txt");
   };
   const score = Math.min(
     100,
@@ -1269,9 +1341,16 @@ function Resume() {
                 )}
               </label>
             ))}
-            <button className="button button-primary" onClick={save}>
-              PDF로 저장하기 ↓
-            </button>
+            <div className="resume-export">
+              <strong>파일로 저장</strong>
+              <p>원하는 형식으로 이력서를 무료 다운로드하세요.</p>
+              <div>
+                <button className="button button-primary" onClick={() => saveDocument("pdf")}>PDF</button>
+                <button className="button button-secondary" onClick={() => saveDocument("doc")}>Word</button>
+                <button className="button button-secondary" onClick={() => saveDocument("html")}>HTML</button>
+                <button className="button button-secondary" onClick={() => saveDocument("txt")}>TXT</button>
+              </div>
+            </div>
           </aside>
           <section className="resume-preview-wrap">
             <div className="preview-toolbar">
