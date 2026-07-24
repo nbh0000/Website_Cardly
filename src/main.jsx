@@ -308,76 +308,60 @@ function Home() {
       <main>
         <section className="hero section-shell">
           <div className="hero-copy">
-            <span className="eyebrow">DESIGN YOUR MOMENT</span>
+            <span className="free-badge">회원가입 0 · 결제 0 · 다운로드 0원</span>
             <h1>
-              한 장에 담는
+              만들고 싶은 순간을
               <br />
-              <em>당신의 순간.</em>
+              <em>가볍게, 근사하게.</em>
             </h1>
-            <p>명함, 이력서, 모바일 초대장을 누구나 감각적으로 만들고 바로 저장하세요.</p>
+            <p>명함부터 이력서, 모바일 초대장까지. 고른 뒤 바로 편집하고 고화질로 저장하세요. Cardly의 모든 기능은 완전 무료입니다.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="/business-card/">
-                명함 만들기 →
+                무료로 디자인하기
               </a>
-              <a className="button button-secondary" href="/resume/">
-                이력서 만들기 →
-              </a>
-              <a className="button button-secondary" href="/invitation/">
-                초대장 만들기 →
+              <a className="button button-secondary" href="#cardly-tools">
+                템플릿 둘러보기
               </a>
             </div>
             <ul className="trust-list">
-              <li>회원가입·결제 없이 완전 무료</li>
-              <li>모바일에서도 편집</li>
-              <li>고화질 PNG·PDF 저장</li>
+              <li>광고성 결제 유도 없음</li>
+              <li>모바일 편집 지원</li>
+              <li>PNG·PDF 고화질 저장</li>
             </ul>
           </div>
           <div className="hero-visual">
-            <div className="showcase-card showcase-card-back" />
-            <div className="showcase-card showcase-card-front">
-              <div className="showcase-logo">C</div>
-              <div>
-                <strong>한서윤</strong>
-                <span>Product Designer</span>
-              </div>
-              <small>hello@cardly.kr</small>
-            </div>
+            <img src="/cardly-studio-hero-v2.png" alt="명함, 이력서, 초대장이 놓인 Cardly 디자인 스튜디오" />
+            <div className="hero-stat hero-stat-card"><b>150</b><span>명함 디자인</span></div>
+            <div className="hero-stat hero-stat-resume"><b>50</b><span>이력서 양식</span></div>
+            <div className="hero-stat hero-stat-invite"><b>30</b><span>초대장 템플릿</span></div>
           </div>
         </section>
-        <section className="features section-shell">
+        <section className="tool-showcase section-shell" id="cardly-tools">
           <div className="section-heading centered-heading">
             <span className="eyebrow">CARDLY TOOLS</span>
-            <h2>필요한 디자인을 더 쉽게</h2>
+            <h2>오늘 필요한 것부터 시작하세요</h2>
+            <p>복잡한 가입이나 설치 없이, 템플릿을 고르면 바로 편집이 시작됩니다.</p>
           </div>
-          <div className="feature-grid">
-            <article>
-              <span className="feature-number">01</span>
-              <h3>150가지 프리미엄 명함</h3>
-              <p>
-                재질과 그래픽이 다른 템플릿을 고르고 모든 요소를 직접
-                편집하세요.
-              </p>
-            </article>
-            <article>
-              <span className="feature-number">02</span>
-              <h3>PPT형 편집기</h3>
-              <p>
-                각 요소를 이동, 크기 조절, 삭제하고 새 텍스트와 도형을
-                추가하세요.
-              </p>
-            </article>
-            <article>
-              <span className="feature-number">03</span>
-              <h3>사진 이력서</h3>
-              <p>사진을 드래그해 넣고 50가지 템플릿을 PDF로 저장하세요.</p>
-            </article>
-            <article className="feature-invite">
-              <span className="feature-number">04 · NEW</span>
-              <h3>Cardly Invite</h3>
-              <p>청첩장, 생일, 모임, 행사를 위한 모바일 초대장을 실시간으로 완성하세요.</p>
-              <a href="/invitation/">초대장 만들기 →</a>
-            </article>
+          <div className="tool-card-grid">
+            <a className="tool-card tool-card-business" href="/business-card/">
+              <div className="tool-card-art" aria-hidden="true" />
+              <div className="tool-card-copy"><span>BUSINESS CARD · 150</span><h3>나를 기억하게 만드는 명함</h3><p>텍스트·색상·배치를 자유롭게 바꾸고 PNG로 저장하세요.</p><b>명함 만들기 <i>→</i></b></div>
+            </a>
+            <a className="tool-card tool-card-resume" href="/resume/">
+              <div className="tool-card-art" aria-hidden="true" />
+              <div className="tool-card-copy"><span>RESUME · 50</span><h3>내용이 먼저 보이는 이력서</h3><p>A4 규격 그대로 편집하고 선명한 PDF로 내려받으세요.</p><b>이력서 만들기 <i>→</i></b></div>
+            </a>
+            <a className="tool-card tool-card-invite" href="/invitation/">
+              <div className="tool-card-art" aria-hidden="true" />
+              <div className="tool-card-copy"><span>INVITATION · 30</span><h3>마음을 담아 보내는 초대장</h3><p>청첩장·생일·모임·행사 소식을 모바일 카드로 완성하세요.</p><b>초대장 만들기 <i>→</i></b></div>
+            </a>
           </div>
+        </section>
+        <section className="free-promise section-shell">
+          <span className="eyebrow">FREE, FOR REAL</span>
+          <h2>가격표가 없는 디자인 도구</h2>
+          <p>무료 체험이 아닙니다. Cardly는 템플릿 선택부터 편집, 고화질 저장까지 그 어떤 결제도 받지 않습니다.</p>
+          <a className="button button-primary" href="/business-card/">지금 바로 만들기</a>
         </section>
       </main>
     </Shell>
