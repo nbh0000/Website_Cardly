@@ -263,6 +263,21 @@ function Header() {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     localStorage.setItem("cardly-theme", dark ? "dark" : "light");
   }, [dark]);
+  React.useEffect(() => {
+    if (!document.querySelector('meta[name="google-adsense-account"]')) {
+      const account = document.createElement("meta");
+      account.name = "google-adsense-account";
+      account.content = "ca-pub-8336109969969326";
+      document.head.append(account);
+    }
+    if (!document.querySelector('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')) {
+      const ads = document.createElement("script");
+      ads.async = true;
+      ads.crossOrigin = "anonymous";
+      ads.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8336109969969326";
+      document.head.append(ads);
+    }
+  }, []);
   return (
     <header className="site-header">
       <a className="brand" href="/" aria-label="Cardly 홈으로 이동">
@@ -399,6 +414,18 @@ function Home() {
             <a href="/resume/"><b>무료 이력서 양식</b><span>깔끔한 A4 이력서 템플릿 50개와 PDF 저장</span><i>바로 만들기 →</i></a>
             <a href="/business-card/"><b>무료 명함 템플릿</b><span>직접 편집하는 명함 디자인 150개와 PNG 저장</span><i>바로 만들기 →</i></a>
             <a href="/invitation/"><b>무료 모바일 초대장</b><span>청첩장·생일·모임·행사 초대장 30개</span><i>바로 만들기 →</i></a>
+          </div>
+        </section>
+        <section className="home-guide-library section-shell" aria-labelledby="home-guide-title">
+          <div className="section-heading">
+            <span className="eyebrow">RESUME KNOWLEDGE</span>
+            <h2 id="home-guide-title">이력서 작성이 막힐 때</h2>
+            <p>채용 담당자가 읽기 쉬운 구성부터 직무별 문장과 사진 준비까지, 실제 작성에 필요한 내용을 정리했습니다.</p>
+          </div>
+          <div className="home-guide-grid">
+            {Object.entries(resumeGuides).map(([url, guide], index) => (
+              <a href={url} key={url}><span>{String(index + 1).padStart(2, "0")}</span><h3>{guide.title}</h3><p>{guide.intro}</p><b>가이드 읽기 →</b></a>
+            ))}
           </div>
         </section>
         <section className="free-promise section-shell">
@@ -1771,8 +1798,109 @@ function Legal({ type }) {
     </Shell>
   );
 }
+const resumeGuides = {
+  "/resume-guide/": {
+    eyebrow: "RESUME GUIDE",
+    title: "좋은 이력서를 만드는 7가지 원칙",
+    intro: "채용 담당자가 빠르게 핵심을 파악하고, 지원자의 강점이 자연스럽게 이어지는 이력서 작성 순서를 정리했습니다.",
+    sections: [
+      ["지원 직무를 한 문장으로 정의하세요", "이름 아래 직무명은 희망 직무와 실제 강점이 함께 드러나야 합니다. ‘기획자’보다 ‘데이터로 문제를 해결하는 서비스 기획자’처럼 구체적으로 작성해 보세요."],
+      ["최근 경험부터 배치하세요", "경력과 프로젝트는 최근 순서로 작성하고 회사명, 역할, 기간, 핵심 성과를 같은 구조로 반복하면 읽는 사람이 빠르게 비교할 수 있습니다."],
+      ["업무보다 변화를 쓰세요", "‘SNS 채널 운영’보다 ‘콘텐츠 발행 체계를 정리해 3개월간 자연 유입을 35% 높임’처럼 행동과 결과를 함께 적는 편이 설득력이 높습니다."],
+      ["한 페이지의 정보 밀도를 조절하세요", "신입과 경력 초기에는 A4 1페이지가 읽기 좋습니다. 관련성이 낮은 자격증과 오래된 활동은 줄이고 지원 직무와 연결되는 경험에 공간을 사용하세요."],
+      ["제출 전 세 가지를 확인하세요", "맞춤법, 연락처, PDF 변환 후 줄바꿈을 반드시 확인하세요. 파일명은 ‘이름_지원직무_이력서.pdf’처럼 채용 담당자가 식별하기 쉽게 작성합니다."],
+    ],
+  },
+  "/resume-example/": {
+    eyebrow: "RESUME EXAMPLES",
+    title: "직무별 이력서 문장 예시",
+    intro: "추상적인 자기소개를 구체적인 경험 문장으로 바꾸는 방법을 직무별 예시로 확인하세요.",
+    sections: [
+      ["프로덕트 디자이너", "사용자 인터뷰 12건과 행동 데이터 분석을 바탕으로 가입 흐름을 재설계해 이탈률을 18% 낮췄습니다."],
+      ["프론트엔드 개발자", "공통 컴포넌트와 번들 분할을 적용해 초기 로딩 시간을 3.1초에서 1.8초로 단축했습니다."],
+      ["마케터", "검색 의도별 콘텐츠 체계를 구축해 6개월 동안 비브랜드 자연 검색 유입을 72% 성장시켰습니다."],
+      ["서비스 기획자", "고객 문의 420건을 유형화하고 셀프 도움말 흐름을 개선해 반복 문의를 월 28% 줄였습니다."],
+      ["신입 지원자", "수업 과제라고만 쓰지 말고 문제, 내 역할, 사용한 도구, 결과와 배운 점을 프로젝트 경험으로 구조화하세요."],
+    ],
+  },
+  "/resume-photo-guide/": {
+    eyebrow: "PHOTO GUIDE",
+    title: "이력서 사진, 깔끔하게 준비하는 방법",
+    intro: "사진이 필요한 지원처라면 과한 보정보다 선명한 인상과 일관된 비율이 중요합니다.",
+    sections: [
+      ["권장 비율과 해상도", "일반적인 증명사진 비율인 3:4를 사용하고 얼굴 윤곽이 흐려지지 않도록 최소 600×800px 이상의 원본을 준비하세요."],
+      ["배경과 조명", "흰색 또는 밝은 회색 단색 배경에서 얼굴 정면에 부드러운 빛이 오도록 촬영하면 인쇄와 화면 모두 자연스럽습니다."],
+      ["표정과 복장", "입을 가볍게 다문 자연스러운 표정과 지원 조직의 분위기에 맞는 단정한 복장이 안전합니다."],
+      ["피해야 할 편집", "얼굴 형태가 달라지는 보정, 과도한 피부 블러, 배경과 머리카락 경계가 깨지는 자동 제거는 신뢰감을 낮출 수 있습니다."],
+      ["Cardly에서 넣기", "사진 업로드 영역에 3:4 이미지를 넣고 A4 미리보기에서 크기와 위치를 확인한 다음 PDF로 저장하세요."],
+    ],
+  },
+  "/career-description-guide/": {
+    eyebrow: "CAREER WRITING",
+    title: "경력기술서를 성과 중심으로 쓰는 법",
+    intro: "경력기술서는 담당 업무 목록이 아니라 어떤 문제를 어떤 방식으로 해결했는지 보여주는 문서입니다.",
+    sections: [
+      ["문제–행동–결과 구조", "상황을 한 줄로 설명하고 내가 맡은 행동, 협업 방식, 측정 가능한 결과 순서로 작성하면 경험의 맥락이 선명해집니다."],
+      ["숫자가 없을 때", "매출 수치가 없다면 처리 시간, 오류 건수, 고객 문의, 참여 인원, 제작 주기처럼 업무 변화를 설명할 수 있는 지표를 찾으세요."],
+      ["팀 성과와 내 역할 분리", "‘프로젝트 성공’으로 끝내지 말고 팀 규모와 담당 범위, 직접 결정하거나 실행한 내용을 구분해 작성하세요."],
+      ["기술과 도구는 맥락 속에서", "도구 이름만 나열하기보다 Figma로 디자인 시스템을 구축해 화면 제작 시간을 단축한 것처럼 사용 목적을 함께 쓰세요."],
+      ["경력별 분량", "각 회사에서 가장 관련성 높은 성과 3~5개를 고르고 오래된 경력일수록 요약해 최근 역량에 시선을 집중시킵니다."],
+    ],
+  },
+  "/resume-entry-level/": {
+    eyebrow: "ENTRY LEVEL",
+    title: "신입 이력서에 꼭 들어갈 내용",
+    intro: "경력이 없어도 프로젝트와 활동을 직무 역량의 증거로 바꾸면 충분히 설득력 있는 이력서를 만들 수 있습니다.",
+    sections: [
+      ["프로젝트를 경력처럼 작성하세요", "프로젝트명, 기간, 팀 구성, 목표, 담당 역할, 결과를 명시하면 수업과 사이드 프로젝트도 실무에 가까운 경험으로 전달됩니다."],
+      ["지원 직무와 관련된 순서", "학력보다 프로젝트와 기술이 더 중요한 직무라면 관련 경험을 위에 배치하세요. 모든 지원자에게 같은 순서가 정답은 아닙니다."],
+      ["성장 과정을 구체적으로", "‘열심히 배웠다’ 대신 어떤 피드백을 받고 무엇을 수정했으며 결과가 어떻게 달라졌는지 작성하세요."],
+      ["기술 수준을 과장하지 마세요", "상·중·하보다 실제로 수행할 수 있는 작업과 사용 경험을 설명하는 편이 면접 질문에도 대응하기 쉽습니다."],
+      ["한 페이지로 정리하세요", "관련성이 낮은 활동을 모두 넣기보다 지원 직무를 설명하는 경험 2~4개를 깊이 있게 보여주는 것이 효과적입니다."],
+    ],
+  },
+  "/resume-experienced/": {
+    eyebrow: "EXPERIENCED",
+    title: "경력직 이력서의 핵심 구성",
+    intro: "경력직 이력서는 연차보다 다음 조직에서 재현할 수 있는 성과와 의사결정 능력을 보여줘야 합니다.",
+    sections: [
+      ["상단에 경력 요약을 넣으세요", "총 경력, 핵심 산업, 전문 영역과 대표 성과를 3~4문장으로 요약해 채용 담당자가 전체 맥락을 먼저 이해하게 합니다."],
+      ["성과의 규모를 설명하세요", "매출이나 성장률뿐 아니라 담당 예산, 사용자 수, 팀 규모, 운영 국가처럼 일의 복잡도와 책임 범위를 함께 적으세요."],
+      ["이직 방향에 맞게 덜어내세요", "지원 직무와 관계가 약한 초기 경력은 짧게 요약하고 최근 5년의 관련 성과를 중심으로 구성합니다."],
+      ["리더십을 행동으로 표현하세요", "‘팀 리딩’보다 목표 설정, 우선순위 결정, 동료 코칭, 이해관계자 조율에서 실제로 한 행동을 작성하세요."],
+      ["2페이지가 필요한 경우", "10년 이상의 관련 경력이나 프로젝트 설명이 필수라면 2페이지도 가능하지만, 첫 페이지에서 핵심 자격과 최근 성과가 모두 보여야 합니다."],
+    ],
+  },
+};
+function ResumeGuide({ guide }) {
+  return (
+    <Shell>
+      <main className="guide-page section-shell">
+        <nav className="guide-breadcrumb" aria-label="현재 위치"><a href="/">홈</a><span>›</span><a href="/resume/">이력서 만들기</a><span>›</span><b>{guide.title}</b></nav>
+        <header className="guide-hero">
+          <span className="eyebrow">{guide.eyebrow}</span>
+          <h1>{guide.title}</h1>
+          <p>{guide.intro}</p>
+          <a className="button button-primary" href="/resume/">무료 이력서 만들기 →</a>
+        </header>
+        <article className="guide-article">
+          {guide.sections.map(([title, body], index) => (
+            <section key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><h2>{title}</h2><p>{body}</p></div></section>
+          ))}
+        </article>
+        <aside className="guide-cta"><div><span className="eyebrow">START FREE</span><h2>작성한 내용을 바로 이력서로 옮겨보세요</h2><p>회원가입이나 결제 없이 A4 이력서를 만들고 PDF·Word·HTML로 저장할 수 있습니다.</p></div><a className="button button-primary" href="/resume/">이력서 작성 시작</a></aside>
+        <nav className="related-guides" aria-label="관련 이력서 가이드">
+          {Object.entries(resumeGuides).filter(([, item]) => item.title !== guide.title).slice(0, 3).map(([url, item]) => <a key={url} href={url}><span>{item.eyebrow}</span><b>{item.title}</b><i>읽어보기 →</i></a>)}
+        </nav>
+      </main>
+    </Shell>
+  );
+}
 const path = location.pathname;
-const Page = path.includes("/business-card") || path.endsWith("maker.html")
+const currentGuide = resumeGuides[path];
+const Page = currentGuide
+  ? () => <ResumeGuide guide={currentGuide} />
+  : path.includes("/business-card") || path.endsWith("maker.html")
   ? Maker
   : path.includes("/resume/") || path.endsWith("resume.html")
     ? Resume
