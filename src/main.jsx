@@ -319,7 +319,9 @@ function Footer() {
 function Shell({ children }) {
   return (
     <>
+      <a className="skip-link" href="#main-content">본문으로 바로가기</a>
       <Header />
+      <span id="main-content" className="skip-target" tabIndex="-1" />
       {children}
       <Footer />
     </>
@@ -334,11 +336,11 @@ function Home() {
           <div className="hero-copy">
             <span className="free-badge">회원가입 0 · 결제 0 · 다운로드 0원</span>
             <h1>
-              필요한 디자인을
+              무료 이력서 제작,
               <br />
-              <em>무료로, 한 번에.</em>
+              <em>지금 바로 시작.</em>
             </h1>
-            <p>무료 이력서 양식부터 명함 템플릿, 모바일 초대장까지.<br className="desktop-break" /> 고른 뒤 바로 편집하고 고화질로 저장하세요.</p>
+            <p>이력서 양식 50개를 회원가입과 결제 없이 편집하고<br className="desktop-break" /> PDF·Word·HTML·TXT로 바로 저장하세요.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="/resume/">
                 무료 이력서 만들기
@@ -1074,20 +1076,31 @@ function ResumeBlock({ id, layout, selected, onPointerDown, onSelect, className 
   );
 }
 
+const readResumeDraft = () => {
+  try {
+    return JSON.parse(localStorage.getItem("cardly-resume-draft")) || {};
+  } catch {
+    return {};
+  }
+};
+
 function Resume() {
   const sheetRef = useRef();
-  const [tpl, setTpl] = useState(resumeTemplates[0]);
-  const [font, setFont] = useState('"Noto Sans KR",sans-serif');
-  const [photo, setPhoto] = useState("");
+  const [tpl, setTpl] = useState(() =>
+    resumeTemplates.find((template) => template.id === readResumeDraft().templateId) || resumeTemplates[0],
+  );
+  const [font, setFont] = useState(() => readResumeDraft().font || '"Noto Sans KR",sans-serif');
+  const [photo, setPhoto] = useState(() => readResumeDraft().photo || "");
   const [selectedBlock, setSelectedBlock] = useState(null);
+  const [exportFormat, setExportFormat] = useState("pdf");
   const [resumeLayout, setResumeLayout] = useState(() =>
-    Object.fromEntries(
+    readResumeDraft().layout || Object.fromEntries(
       ["photo", "identity", "contact", "profile", "experience", "education", "skills"].map(
         (id) => [id, { x: 0, y: 0, size: 100, hidden: false }],
       ),
     ),
   );
-  const [data, setData] = useState({
+  const [data, setData] = useState(() => readResumeDraft().data || ({
     name: "한서윤",
     title: "Product Designer",
     email: "hello@cardly.kr",
@@ -1098,7 +1111,23 @@ function Resume() {
       "Cardly · Product Designer · 2024–현재\nStudio One · UX Designer · 2021–2024",
     education: "한국대학교 · 시각디자인학과 · 2021",
     skills: "Product Design, UX Research, Figma, Prototyping",
-  });
+  }));
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem("cardly-resume-draft", JSON.stringify({
+          templateId: tpl.id,
+          font,
+          photo,
+          layout: resumeLayout,
+          data,
+        }));
+      } catch {
+        // 브라우저 저장 공간이 부족해도 편집은 계속할 수 있습니다.
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [tpl, font, photo, resumeLayout, data]);
   const load = (file) => {
     if (file?.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -1149,14 +1178,27 @@ function Resume() {
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
-  const downloadFile = (content, type, extension) => {
-    const blob = new Blob(["\ufeff", content], { type });
+  const exportOptions = {
+    pdf: ["pdf", "application/pdf", "PDF 문서"],
+    doc: ["doc", "application/msword", "Word 문서"],
+    html: ["html", "text/html", "HTML 문서"],
+    txt: ["txt", "text/plain", "텍스트 문서"],
+  };
+  const exportName = (format) =>
+    `cardly-resume-${data.name || "resume"}.${exportOptions[format][0]}`;
+  const saveBlob = async (blob, name, handle) => {
+    if (handle) {
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return;
+    }
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `cardly-resume-${data.name || "resume"}.${extension}`;
+    link.download = name;
     link.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
   const resumeDocument = () => {
     const paragraphs = (value) =>
@@ -1171,7 +1213,7 @@ function Resume() {
     <section><h2>소개</h2>${paragraphs(data.summary)}</section><section><h2>경력</h2>${paragraphs(data.experience)}</section>
     <section><h2>학력</h2>${paragraphs(data.education)}</section><section><h2>기술</h2><div class="skills">${skills}</div></section></body></html>`;
   };
-  const savePdf = async () => {
+  const createPdfBlob = async () => {
     const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
       import("html2canvas"),
       import("jspdf"),
@@ -1182,16 +1224,29 @@ function Resume() {
     });
     const pdf = new jsPDF("p", "mm", "a4");
     pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, 210, 297);
-    pdf.save(`cardly-resume-${data.name || "resume"}.pdf`);
+    return pdf.output("blob");
   };
-  const saveDocument = (format) => {
-    if (format === "pdf") return savePdf();
-    if (format === "html")
-      return downloadFile(resumeDocument(), "text/html;charset=utf-8", "html");
-    if (format === "doc")
-      return downloadFile(resumeDocument().replace("<html lang=\"ko\">", '<html lang="ko" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">'), "application/msword;charset=utf-8", "doc");
+  const saveDocument = async () => {
+    const [extension, mime, description] = exportOptions[exportFormat];
+    let handle;
+    if ("showSaveFilePicker" in window) {
+      try {
+        handle = await window.showSaveFilePicker({
+          suggestedName: exportName(exportFormat),
+          types: [{ description, accept: { [mime]: [`.${extension}`] } }],
+        });
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+      }
+    }
+    if (exportFormat === "pdf")
+      return saveBlob(await createPdfBlob(), exportName(exportFormat), handle);
+    if (exportFormat === "html")
+      return saveBlob(new Blob(["\ufeff", resumeDocument()], { type: `${mime};charset=utf-8` }), exportName(exportFormat), handle);
+    if (exportFormat === "doc")
+      return saveBlob(new Blob(["\ufeff", resumeDocument().replace("<html lang=\"ko\">", '<html lang="ko" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">')], { type: `${mime};charset=utf-8` }), exportName(exportFormat), handle);
     const plainText = `${data.name}\n${data.title}\n${data.email} · ${data.phone}\n\n[소개]\n${data.summary}\n\n[경력]\n${data.experience}\n\n[학력]\n${data.education}\n\n[기술]\n${data.skills}`;
-    return downloadFile(plainText, "text/plain;charset=utf-8", "txt");
+    return saveBlob(new Blob(["\ufeff", plainText], { type: `${mime};charset=utf-8` }), exportName(exportFormat), handle);
   };
   const score = Math.min(
     100,
@@ -1323,13 +1378,17 @@ function Resume() {
             ))}
             <div className="resume-export">
               <strong>파일로 저장</strong>
-              <p>원하는 형식으로 이력서를 무료 다운로드하세요.</p>
-              <div>
-                <button className="button button-primary" onClick={() => saveDocument("pdf")}>PDF</button>
-                <button className="button button-secondary" onClick={() => saveDocument("doc")}>Word</button>
-                <button className="button button-secondary" onClick={() => saveDocument("html")}>HTML</button>
-                <button className="button button-secondary" onClick={() => saveDocument("txt")}>TXT</button>
-              </div>
+              <p>작업은 브라우저에 자동 저장됩니다. 형식을 선택한 뒤 원하는 위치에 저장하세요.</p>
+              <label className="resume-export-format">
+                <span>파일 형식</span>
+                <select value={exportFormat} onChange={(event) => setExportFormat(event.target.value)}>
+                  <option value="pdf">PDF 문서 (.pdf)</option>
+                  <option value="doc">Word 문서 (.doc)</option>
+                  <option value="html">HTML 문서 (.html)</option>
+                  <option value="txt">텍스트 문서 (.txt)</option>
+                </select>
+              </label>
+              <button className="button button-primary resume-save-button" onClick={saveDocument}>저장하기 ↓</button>
             </div>
           </aside>
           <section className="resume-preview-wrap">
@@ -1514,19 +1573,35 @@ const inviteTemplates = Array.from({ length: 30 }, (_, index) => {
   };
 });
 
+const readInviteDraft = () => {
+  try {
+    return JSON.parse(localStorage.getItem("cardly-invite-draft")) || {};
+  } catch {
+    return {};
+  }
+};
+
 function Invite() {
   const inviteRef = useRef();
-  const [kind, setKind] = useState("wedding");
-  const [photo, setPhoto] = useState("");
-  const [inviteTemplate, setInviteTemplate] = useState(inviteTemplates[0]);
-  const [details, setDetails] = useState({
-    ...invitePresets.wedding,
-    date: "2026-10-24",
-    time: "오후 2:00",
-    place: "라운드 가든",
-    address: "서울특별시 중구 세종대로 110",
-    host: "한서윤",
-  });
+  const inviteHistoryRef = useRef([]);
+  const inviteFutureRef = useRef([]);
+  const [, setInviteHistoryVersion] = useState(0);
+  const [kind, setKind] = useState(() => readInviteDraft().kind || "wedding");
+  const [photo, setPhoto] = useState(() => readInviteDraft().photo || "");
+  const [inviteItems, setInviteItems] = useState(() => readInviteDraft().items || []);
+  const [selectedInviteItem, setSelectedInviteItem] = useState(null);
+  const [saveInviteStatus, setSaveInviteStatus] = useState("자동 저장됨");
+  const [inviteTemplate, setInviteTemplate] = useState(() =>
+    inviteTemplates.find((template) => template.id === readInviteDraft().templateId) || inviteTemplates[0],
+  );
+  const [details, setDetails] = useState(() => readInviteDraft().details || ({
+      ...invitePresets.wedding,
+      date: "2026-10-24",
+      time: "오후 2:00",
+      place: "라운드 가든",
+      address: "서울특별시 중구 세종대로 110",
+      host: "한서윤",
+    }));
   const changeKind = (nextKind) => {
     const preset = invitePresets[nextKind];
     setKind(nextKind);
@@ -1539,17 +1614,156 @@ function Invite() {
     reader.onload = () => setPhoto(reader.result);
     reader.readAsDataURL(file);
   };
+  const rememberInvite = () => {
+    inviteHistoryRef.current = [
+      ...inviteHistoryRef.current.slice(-29),
+      inviteItems.map((item) => ({ ...item })),
+    ];
+    inviteFutureRef.current = [];
+    setInviteHistoryVersion((value) => value + 1);
+  };
+  const patchInviteItem = (id, patch) =>
+    setInviteItems((items) =>
+      items.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+    );
+  const addInviteItem = (type) => {
+    rememberInvite();
+    const item = {
+      id: crypto.randomUUID(),
+      type,
+      text: {
+        text: "새 텍스트",
+        email: "email@example.com",
+        phone: "010-0000-0000",
+        logo: "LOGO",
+        divider: "",
+        circle: "",
+        square: "",
+      }[type],
+      x: 42,
+      y: 44,
+      size: 100,
+      color: details.accent,
+    };
+    setInviteItems((items) => [...items, item]);
+    setSelectedInviteItem(item.id);
+  };
+  const addInviteImage = (file) => {
+    if (!file?.type.startsWith("image/")) return;
+    rememberInvite();
+    const reader = new FileReader();
+    reader.onload = () => {
+      const item = {
+        id: crypto.randomUUID(),
+        type: "image",
+        src: reader.result,
+        text: "",
+        x: 38,
+        y: 38,
+        size: 100,
+      };
+      setInviteItems((items) => [...items, item]);
+      setSelectedInviteItem(item.id);
+    };
+    reader.readAsDataURL(file);
+  };
+  const dragInviteItem = (event, item) => {
+    if (event.detail > 1) return;
+    event.preventDefault();
+    rememberInvite();
+    setSelectedInviteItem(item.id);
+    const rect = inviteRef.current.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const target = event.currentTarget;
+    const pointerId = event.pointerId;
+    target.setPointerCapture(pointerId);
+    const cleanup = () => {
+      target.removeEventListener("pointermove", move);
+      target.removeEventListener("pointerup", cleanup);
+      target.removeEventListener("pointercancel", cleanup);
+      if (target.hasPointerCapture(pointerId)) target.releasePointerCapture(pointerId);
+    };
+    const move = (nextEvent) => {
+      if (nextEvent.pointerId !== pointerId) return;
+      patchInviteItem(item.id, {
+        x: Math.max(0, Math.min(90, item.x + ((nextEvent.clientX - startX) / rect.width) * 100)),
+        y: Math.max(0, Math.min(92, item.y + ((nextEvent.clientY - startY) / rect.height) * 100)),
+      });
+    };
+    target.addEventListener("pointermove", move);
+    target.addEventListener("pointerup", cleanup);
+    target.addEventListener("pointercancel", cleanup);
+  };
+  const undoInvite = () => {
+    const previous = inviteHistoryRef.current.pop();
+    if (!previous) return;
+    inviteFutureRef.current.push(inviteItems.map((item) => ({ ...item })));
+    setInviteItems(previous);
+    setSelectedInviteItem(null);
+    setInviteHistoryVersion((value) => value + 1);
+  };
+  const redoInvite = () => {
+    const next = inviteFutureRef.current.pop();
+    if (!next) return;
+    inviteHistoryRef.current.push(inviteItems.map((item) => ({ ...item })));
+    setInviteItems(next);
+    setSelectedInviteItem(null);
+    setInviteHistoryVersion((value) => value + 1);
+  };
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem("cardly-invite-draft", JSON.stringify({
+          kind,
+          photo,
+          items: inviteItems,
+          templateId: inviteTemplate.id,
+          details,
+        }));
+        setSaveInviteStatus("자동 저장됨");
+      } catch {
+        setSaveInviteStatus("저장 공간이 부족합니다");
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [kind, photo, inviteItems, inviteTemplate, details]);
   const saveInvite = async () => {
-    const { default: html2canvas } = await import("html2canvas");
-    const canvas = await html2canvas(inviteRef.current, {
-      scale: 4,
-      useCORS: true,
-      backgroundColor: null,
-    });
-    const link = document.createElement("a");
-    link.download = `cardly-invite-${kind}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    const name = `cardly-invite-${kind}.png`;
+    let handle;
+    try {
+      setSaveInviteStatus("저장 준비 중…");
+      if ("showSaveFilePicker" in window) {
+        handle = await window.showSaveFilePicker({
+          suggestedName: name,
+          types: [{ description: "PNG 이미지", accept: { "image/png": [".png"] } }],
+        });
+      }
+      const { default: html2canvas } = await import("html2canvas");
+      setSelectedInviteItem(null);
+      await new Promise((resolve) => setTimeout(resolve));
+      const canvas = await html2canvas(inviteRef.current, {
+        scale: 4,
+        useCORS: true,
+        backgroundColor: null,
+      });
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (handle) {
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+      } else {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = name;
+        link.href = url;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+      }
+      setSaveInviteStatus("저장 완료");
+    } catch (error) {
+      setSaveInviteStatus(error?.name === "AbortError" ? "저장 취소됨" : "저장에 실패했습니다");
+    }
   };
   const update = (key, value) => setDetails((current) => ({ ...current, [key]: value }));
   return (
@@ -1601,6 +1815,45 @@ function Invite() {
               <span>클릭해서 사진을 선택하세요</span>
             </label>
             {photo && <button type="button" className="invite-photo-remove" onClick={() => setPhoto("")}>사진 삭제</button>}
+            <div className="invite-component-editor">
+              <strong>컴포넌트 편집</strong>
+              <p>텍스트와 도형을 추가한 뒤 미리보기에서 끌어 이동하세요.</p>
+              <EditorToolbar
+                selected={inviteItems.find((item) => item.id === selectedInviteItem)}
+                onSize={(size) => patchInviteItem(selectedInviteItem, { size })}
+                onText={(text) => patchInviteItem(selectedInviteItem, { text })}
+                onColor={(color) => patchInviteItem(selectedInviteItem, { color })}
+                defaultColor={details.accent}
+                onAdd={addInviteItem}
+                onDuplicate={() => {
+                  const source = inviteItems.find((item) => item.id === selectedInviteItem);
+                  if (!source) return;
+                  rememberInvite();
+                  const copy = { ...source, id: crypto.randomUUID(), x: Math.min(90, source.x + 4), y: Math.min(92, source.y + 4) };
+                  setInviteItems((items) => [...items, copy]);
+                  setSelectedInviteItem(copy.id);
+                }}
+                onCenter={() => {
+                  if (!selectedInviteItem) return;
+                  rememberInvite();
+                  patchInviteItem(selectedInviteItem, { x: 50, y: 46 });
+                }}
+                onUndo={undoInvite}
+                onRedo={redoInvite}
+                canUndo={inviteHistoryRef.current.length > 0}
+                canRedo={inviteFutureRef.current.length > 0}
+                onDelete={() => {
+                  if (!selectedInviteItem) return;
+                  rememberInvite();
+                  setInviteItems((items) => items.filter((item) => item.id !== selectedInviteItem));
+                  setSelectedInviteItem(null);
+                }}
+              />
+              <label className="invite-component-image">
+                <input type="file" accept="image/*" onChange={(event) => addInviteImage(event.target.files[0])} />
+                ＋ 사진 컴포넌트 추가
+              </label>
+            </div>
           </aside>
           <section className="invite-preview-panel">
             <div className="preview-toolbar"><b>모바일 미리보기</b><span>9:16</span></div>
@@ -1612,6 +1865,9 @@ function Invite() {
                 "--invite-accent": details.accent,
                 "--invite-art": `url(${inviteTemplate.artUrl})`,
                 "--invite-art-position": inviteTemplate.artPosition,
+              }}
+              onPointerDown={(event) => {
+                if (event.target === event.currentTarget) setSelectedInviteItem(null);
               }}
             >
               <div className="invite-orbit" />
@@ -1628,8 +1884,19 @@ function Invite() {
                 <div><dt>PLACE</dt><dd>{details.place}<small>{details.address}</small></dd></div>
                 <div><dt>HOST</dt><dd>{details.host}</dd></div>
               </dl>
+              {inviteItems.map((item) => (
+                <CardItem
+                  key={item.id}
+                  item={item}
+                  selected={selectedInviteItem === item.id}
+                  onPointerDown={(event) => dragInviteItem(event, item)}
+                  onSelect={() => setSelectedInviteItem(item.id)}
+                  onText={(text) => patchInviteItem(item.id, { text })}
+                />
+              ))}
             </article>
             <button className="button button-primary invite-save" onClick={saveInvite}>초대장 이미지 저장 ↓</button>
+            <p className="invite-save-status" aria-live="polite">{saveInviteStatus}</p>
           </section>
         </div>
       </main>
@@ -1871,5 +2138,5 @@ const Page = currentGuide
 createRoot(document.getElementById("root")).render(<Page />);
 if ("serviceWorker" in navigator)
   window.addEventListener("load", () =>
-    navigator.serviceWorker.register("./sw.js"),
+    navigator.serviceWorker.register("/sw.js"),
   );

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Cardly 로고</title>
+  <desc id="desc">보라색 바탕 위에 흰색 C가 있는 Cardly 로고</desc>
+  <defs>
+    <linearGradient id="cardly-gradient" x1="72" y1="52" x2="440" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C73FF"/>
+      <stop offset="1" stop-color="#5148E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#cardly-gradient)"/>
+  <path fill="#fff" d="M365.2 337.1c-27.4 30.6-60.5 45.9-99.4 45.9-74.8 0-132.8-54.2-132.8-127s58-127 132.8-127c38.9 0 72 15.3 99.4 45.9l-45.6 40.8c-14.3-16.3-32-24.5-53.2-24.5-38.8 0-68.5 27.2-68.5 64.8s29.7 64.8 68.5 64.8c21.2 0 38.9-8.2 53.2-24.5l45.6 40.8Z"/>
+</svg>
