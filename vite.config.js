@@ -1,3 +1,59 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'node:path';
-export default defineConfig({base:'/',build:{rollupOptions:{input:{index:resolve(import.meta.dirname,'index.html'),maker:resolve(import.meta.dirname,'maker.html'),resumeLegacy:resolve(import.meta.dirname,'resume.html'),inviteLegacy:resolve(import.meta.dirname,'invite.html'),aboutLegacy:resolve(import.meta.dirname,'about.html'),contactLegacy:resolve(import.meta.dirname,'contact.html'),privacyLegacy:resolve(import.meta.dirname,'privacy.html'),termsLegacy:resolve(import.meta.dirname,'terms.html'),businessCard:resolve(import.meta.dirname,'business-card/index.html'),resume:resolve(import.meta.dirname,'resume/index.html'),invitation:resolve(import.meta.dirname,'invitation/index.html'),resumeGuide:resolve(import.meta.dirname,'resume-guide/index.html'),resumeExample:resolve(import.meta.dirname,'resume-example/index.html'),resumePhotoGuide:resolve(import.meta.dirname,'resume-photo-guide/index.html'),careerDescriptionGuide:resolve(import.meta.dirname,'career-description-guide/index.html'),resumeEntryLevel:resolve(import.meta.dirname,'resume-entry-level/index.html'),resumeExperienced:resolve(import.meta.dirname,'resume-experienced/index.html'),about:resolve(import.meta.dirname,'about/index.html'),contact:resolve(import.meta.dirname,'contact/index.html'),privacy:resolve(import.meta.dirname,'privacy/index.html'),terms:resolve(import.meta.dirname,'terms/index.html')}}}});
+import { defineConfig } from "vite";
+import { readdirSync } from "node:fs";
+import { join, relative } from "node:path";
+
+const projectRoot = import.meta.dirname;
+const pageDirectories = [
+  "about",
+  "business-card",
+  "career-description-guide",
+  "contact",
+  "guides",
+  "invitation",
+  "privacy",
+  "resume",
+  "resume-entry-level",
+  "resume-example",
+  "resume-experienced",
+  "resume-guide",
+  "resume-photo-guide",
+  "terms",
+];
+
+function collectHtmlEntries(directory, entries = {}) {
+  for (const item of readdirSync(directory, { withFileTypes: true })) {
+    const fullPath = join(directory, item.name);
+    if (item.isDirectory()) {
+      collectHtmlEntries(fullPath, entries);
+    } else if (item.name.endsWith(".html")) {
+      addHtmlEntry(fullPath, entries);
+    }
+  }
+  return entries;
+}
+
+function addHtmlEntry(fullPath, entries) {
+  const relativePath = relative(projectRoot, fullPath).replaceAll("\\", "/");
+  const key =
+    relativePath.replace(/\.html$/, "").replaceAll("/", "-") || "index";
+  entries[key] = fullPath;
+}
+
+const htmlEntries = {};
+for (const item of readdirSync(projectRoot, { withFileTypes: true })) {
+  if (item.isFile() && item.name.endsWith(".html")) {
+    addHtmlEntry(join(projectRoot, item.name), htmlEntries);
+  }
+}
+for (const directory of pageDirectories) {
+  collectHtmlEntries(join(projectRoot, directory), htmlEntries);
+}
+
+export default defineConfig({
+  base: "/",
+  build: {
+    rollupOptions: {
+      input: htmlEntries,
+    },
+  },
+});

@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build --configLoader runner",
+    "preview": "vite preview --configLoader runner",
+    "lint": "prettier --check src/main.jsx src/guide-content.js vite.config.js scripts/audit-site.mjs",
+    "typecheck": "vite build --configLoader runner",
+    "test": "node scripts/audit-site.mjs"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",

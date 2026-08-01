@@ -1,5 +1,13 @@
-const CACHE = "cardly-v4";
-const CORE = ["/", "/resume/", "/business-card/", "/invitation/", "/favicon.svg", "/manifest.webmanifest"];
+const CACHE = "cardly-v5";
+const CORE = [
+  "/",
+  "/resume/",
+  "/business-card/",
+  "/invitation/",
+  "/guides/",
+  "/favicon.svg",
+  "/manifest.webmanifest",
+];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)));
   self.skipWaiting();
