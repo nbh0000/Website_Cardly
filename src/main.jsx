@@ -658,9 +658,8 @@ function Home() {
               회원가입 0 · 결제 0 · 다운로드 0원
             </span>
             <h1>
-              무료 이력서·명함 제작,
-              <br />
-              <em>지금 바로 시작.</em>
+              <span className="hero-title-line">무료 이력서·명함 제작,</span>
+              <em className="hero-title-line">지금 바로 시작.</em>
             </h1>
             <p>
               회원가입과 결제 없이 이력서와 명함을 직접 편집하고
